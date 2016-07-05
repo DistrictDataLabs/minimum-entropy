@@ -99,6 +99,7 @@ WSGI_APPLICATION = 'minent.wsgi.application'
 ## Application definition
 INSTALLED_APPS = [
     # Django apps
+    'grappelli', # Must come before admin
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
