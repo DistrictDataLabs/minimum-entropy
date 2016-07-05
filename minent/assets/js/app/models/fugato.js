@@ -2,13 +2,13 @@
  *  app/models/fugato.js
  *  Models for Fugato (Questions and Answers)
  *
- *  Author:   Benjamin Bengfort <bengfort@cs.umd.edu>
+ *  Author:   Benjamin Bengfort <bbengfort@districtdatalabs.com>
  *  Created:  Thu Oct 30 13:43:41 2014 -0400
  *
- *  Copyright (C) 2014 University of Maryland
+ *  Copyright (C) 2014 District Data Labs
  *  For license information, see LICENSE.txt
  *
- *  ID: fugato.js [] bengfort@cs.umd.edu $
+ *  ID: fugato.js [] benjamin@bengfort.com $
  */
 
 // JS Hint directives and strict mode

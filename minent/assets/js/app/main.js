@@ -1,5 +1,5 @@
 /*
- * Main entry point to the Kyudo application
+ * Main entry point to the Minimum Entropy application
  */
 
 define([

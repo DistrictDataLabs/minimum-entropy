@@ -2,13 +2,13 @@
  * config/require.js
  * Configuration for Require.js
  *
- * Copyright (C) 2014 University of Maryland
+ * Copyright (C) 2016 District Data Labs
  * For license information, see LICENSE.txt
  *
- * Author:  Benjamin Bengfort <bengfort@cs.umd.edu>
+ * Author:  Benjamin Bengfort <bbengfort@districtdatalabs.com>
  * Created: Wed Jan 22 23:52:24 2014 -0500
  *
- * ID: require.js [] bengfort@cs.umd.edu $
+ * ID: require.js [] benjamin@bengfort.com $
  */
 
 requirejs.config({

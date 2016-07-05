@@ -2,13 +2,13 @@
  * utils/ask.js
  * Javascript that runs the ask question dialogs
  *
- * Copyright (C) 2014 University of Maryland
+ * Copyright (C) 2016 District Data Labs
  * For license information, see LICENSE.txt
  *
- * Author:  Benjamin Bengfort <bengfort@cs.umd.edu>
+ * Author:  Benjamin Bengfort <bbengfort@districtdatalabs.com>
  * Created: Fri Jan 16 11:48:50 2015 -0500
  *
- * ID: hotkeys.js [] bengfort@cs.umd.edu $
+ * ID: hotkeys.js [] benjamin@bengfort.com $
  */
 
 
