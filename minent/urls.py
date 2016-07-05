@@ -30,20 +30,35 @@ Including another URLconf
 ## Imports
 ##########################################################################
 
-from django.conf.urls import patterns, url, include
+from django.conf.urls import url, include
 from django.contrib import admin
+from rest_framework import routers
 
 from django.views.generic import TemplateView
 
+from users.views import *
 from minent.views import *
+# from fugato.views import *
+
+##########################################################################
+## Endpoint Discovery
+##########################################################################
+
+## API
+router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
+# router.register(r'questions', QuestionViewSet)
+# router.register(r'answers', AnswerViewSet)
+router.register(r'status', HeartbeatViewSet, "status")
+# router.register(r'typeahead', QuestionTypeaheadViewSet, "typeahead")
 
 ##########################################################################
 ## Minimum Entropy URL Patterns
 ##########################################################################
 
-urlpatterns = patterns('',
+urlpatterns = [
     ## Admin site
-    (r'^grappelli/', include('grappelli.urls')),
+    url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', admin.site.urls),
 
     ## Static pages
@@ -54,5 +69,8 @@ urlpatterns = patterns('',
     ## Authentication
     url('', include('social.apps.django_app.urls', namespace='social')),
     url('', include('django.contrib.auth.urls')),
-    # url(r'^profile/$', ProfileView.as_view(), name='profile'),
-)
+    url(r'^profile/$', ProfileView.as_view(), name='profile'),
+
+    ## REST API Urls
+    url(r'^api/', include(router.urls, namespace="api")),
+]
