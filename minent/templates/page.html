@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+  <div id="wrap">
+
+    {% block navbar %}
+      {% include 'components/navbar.html' %}
+    {% endblock %}
+
+    <!-- Begin page content -->
+    <div id="content">
+    {% block content %}
+    {% endblock %}
+    </div>
+
+  </div>
+
+  <!-- modals for navbar interaction -->
+  <div id="modals">
+  {% block modals %}
+    {% include 'components/modals.html' %}
+  {% endblock %}
+  </div>
+
+  {% block footer %}
+    {% include 'components/footer.html' %}
+  {% endblock %}
+{% endblock %}
