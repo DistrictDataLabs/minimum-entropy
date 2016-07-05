@@ -50,4 +50,9 @@ urlpatterns = patterns('',
     url(r'^$', SplashPage.as_view(), name='home'),
     url(r'^terms/$', TemplateView.as_view(template_name='site/legal/terms.html'), name='terms'),
     url(r'^privacy/$', TemplateView.as_view(template_name='site/legal/privacy.html'), name='privacy'),
+
+    ## Authentication
+    url('', include('social.apps.django_app.urls', namespace='social')),
+    url('', include('django.contrib.auth.urls')),
+    # url(r'^profile/$', ProfileView.as_view(), name='profile'),
 )

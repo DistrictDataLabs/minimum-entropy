@@ -15,6 +15,15 @@ Markdown==2.6.6
 bleach==1.4.3
 html5lib==0.9999999
 
+## Social Authentication
+python-social-auth==0.2.19
+defusedxml==0.4.1
+oauthlib==1.1.2
+PyJWT==1.4.0
+python3-openid==3.0.10
+requests-oauthlib==0.6.1
+requests==2.10.0
+
 ## Other Dependencies
 six==1.10.0
 python-dateutil==2.5.3

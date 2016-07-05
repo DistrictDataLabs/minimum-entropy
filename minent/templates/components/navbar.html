@@ -12,7 +12,7 @@
         </button>
         <a class="navbar-brand" href="/">
           <img class="img-brand" src="{% static 'img/logo.png' %}" alt="" />
-          Minimum Entropy
+          Minimum Entropy <sup><small>beta</small></sup>
         </a>
       </div>
       <div class="collapse navbar-collapse">
@@ -64,7 +64,7 @@
                 </a>
               </li>
               <li>
-                <a href="{# url 'auth:logout' #}">
+                <a href="{% url 'logout' %}">
                   <i class="fa fa-sign-out"></i>  Log out
                 </a>
               </li>
@@ -81,7 +81,7 @@
           </li>
           {% else %}
           <li>
-            <a href="{# url 'social:begin' 'google-oauth2' #}">
+            <a href="{% url 'social:begin' 'google-oauth2' %}">
               <i class="fa fa-google-plus-square"></i>
               Log in with Google
             </a>
