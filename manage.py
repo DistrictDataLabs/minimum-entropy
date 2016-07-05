@@ -29,7 +29,7 @@ import dotenv
 if __name__ == "__main__":
     ## Manage Django Environment
     dotenv.read_dotenv()
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "minent.settings")
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "minent.settings.production")
 
     ## Execute Django Utility
     from django.core.management import execute_from_command_line

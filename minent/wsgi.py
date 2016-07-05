@@ -33,7 +33,7 @@ from whitenoise.django import DjangoWhiteNoise
 ##########################################################################
 
 ## Load settings from environment
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "minent.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "minent.settings.production")
 
 ## Create Whitenoise application
 application = get_wsgi_application()
