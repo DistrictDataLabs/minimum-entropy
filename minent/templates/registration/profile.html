@@ -1,0 +1,289 @@
+{% extends 'page.html' %}
+{% load staticfiles %}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <link type="text/css" rel="stylesheet"  href="{% static 'css/profile.css' %}">
+{% endblock %}
+
+{% block content %}
+
+  <div class="container">
+    <!-- Main Row in Container -->
+    <div class="row">
+
+      <!-- Image/Profile sidebar on left -->
+      <div id="profile-sidebar" class="col-sm-3">
+
+        <!-- Profile title box with picture -->
+        <div class="gravatar">
+          <img class="img-responsive img-rounded" src="{{ user.profile.gravatar }}"
+             alt="Gravatar" title="{{ user.full_name }}" />
+            <div class="mask">
+              <a href="http://en.gravatar.com/emails/" rel="nofollow" title="Change Gravatar">Edit on Gravatar</a>
+            </div>
+        </div>
+
+        <h2 id="profileFullName">{{ user.profile.full_name }}</h2>
+        <h3 class="text-muted" id="profileUsername">{{ user.username }}</h3>
+
+        <!-- Heads up profile info -->
+        <hr class="profile-sep" />
+        <ul class="list-unstyled">
+
+          {% if user.profile.location %}
+          <li id="userLocation">
+            <i class="fa fa-map-marker"></i>
+            <span id="profileLocation">{{ user.profile.location }}</span>
+          </li>
+          {% endif %}
+
+          {% if user.profile.organization %}
+          <li id="userOrganization">
+            <i class="fa fa-building"></i>
+            <span id="profileOrganization">{{ user.profile.organization }}</span>
+          </li>
+          {% endif %}
+
+          {% if user.email %}
+          <li id="userEmail">
+              <i class="fa fa-envelope"></i>
+              <span id="profileEmail">{{ user.email }}</span>
+          </li>
+          {% endif %}
+
+          <li id="userJoined">
+              <i class="fa fa-clock-o"></i>
+              Joined on {{ user.date_joined|date }}
+          </li>
+
+        </ul>
+
+        <!-- Profile statistics -->
+        <hr class="profile-sep" />
+        <ul class="number-stats list-unstyled list-inline">
+          <li>
+            <a href="#">
+              <span class="statistic">{{ user.questions.count }}</span>
+              <span class="statlabel">questions</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span class="statistic">{{ user.answers.count }}</span>
+              <span class="statlabel">answers</span>
+            </a>
+          </li>
+          <li>
+            <a href="#">
+              <span class="statistic">{{ user.votes.count }}</span>
+              <span class="statlabel">votes</span>
+            </a>
+          </li>
+        </ul>
+
+      </div><!-- image/profile sidebar ends -->
+
+      <!-- Main Profile Area -->
+      <div id="profile-content" class="col-sm-9">
+
+        <!-- Profile Tab Navigation -->
+        <div>
+
+          <!-- edit profile button -->
+          <button id="btnEditProfile" class="btn btn-default btn-sm pull-right"
+              data-toggle="modal" data-target="#editProfileModal">
+            <i class="fa fa-pencil"></i> Edit Profile
+          </button>
+
+          <!-- change password button -->
+          <button id="btnSetPassword" class="btn btn-default btn-sm pull-right" data-toggle="modal" data-target="#setPasswordModal" style="margin-right:6px">
+            <i class="fa fa-lock"></i> Password
+          </button>
+
+          <ul class="nav nav-tabs">
+            <li class="active">
+              <a href="#activity" data-toggle="tab">
+                <i class="fa fa-rss"></i> Activity
+              </a>
+            </li>
+          </ul>
+
+          <div class="clearfix"></div>
+        </div>
+        <!-- end profile tabs -->
+
+        <div class="tab-content">
+          <div id="activity" class="tab-pane active">
+            <div class="well">
+              <!-- Activity Log -->
+              <ul class="list-unstyled activity-stream">
+              {% for activity in activity_stream %}
+                <li class="stream-item">
+                  <span class="text-muted"><small>{{ activity.timesince }} ago</small></span><br />
+                  {% autoescape off %}
+                  {% if activity.target %}
+                    {% if activity.theme %}
+                      {{ activity.get_actor_html }} {{ activity.get_verb_display }} {{ activity.get_theme_html }} on {{ activity.get_target_html }}
+                    {% else %}
+                      {{ activity.get_actor_html }} {{ activity.get_verb_display }} {{ activity.get_target_html }}
+                    {% endif %}
+
+                  {% elif activity.theme %}
+                      {{ activity.get_actor_html }} {{ activity.get_verb_display }} {{ activity.get_theme_html }}
+                  {% else %}
+                    {{ activity.get_actor_html }} {{ activity.get_verb_display }}
+                  {% endif %}
+                  {% endautoescape %}
+                </li>
+              {% empty %}
+                <li>No activities recorded yet</li>
+              {% endfor %}
+              </ul><!-- end activity log -->
+            </div>
+
+          </div><!-- activity panel ends -->
+        </div><!-- tab-content ends -->
+
+      </div><!-- main profile area ends -->
+    </div>
+  </div>
+
+{% endblock %}
+
+{% block modals %}
+  {{ block.super }}
+  {% include 'registration/components/edit-profile-modal.html' %}
+  {% include 'registration/components/set-password-modal.html' %}
+{% endblock %}
+
+{% block javascripts %}
+  {{ block.super }}
+
+  <script type="text/javascript">
+    (function($) {
+        $(document).ready(function() {
+
+            // Configure the profile application
+            var csrfToken   = $('input[name="csrfmiddlewaretoken"]').val();
+            $.ajaxSetup({headers: {"X-CSRFToken": csrfToken}});
+            console.log("profile application ready");
+
+            var passwordForm = $('#setPasswordForm');
+            var userDetail   = "{{ user.profile.get_api_detail_url }}";
+            var profileForm  = $("#editProfileForm");
+
+            // When setPasswordModal is closed - reset the setPasswordForm
+            $('#setPasswordModal').on('hidden.bs.modal', function (e) {
+              passwordForm.removeClass('has-error');
+              $('#passwordHelp').text("");
+              $('#setPasswordForm')[0].reset();
+            });
+
+            // Handle setPasswordForm submission
+            passwordForm.submit(function(e) {
+              e.preventDefault();
+
+              // Get form data
+              var data = {
+                'password': $('#txtPassword').val(),
+                'repeated': $('#txtRepeated').val()
+              }
+
+              // Validate the data
+              if (data.password != data.repeated) {
+                passwordForm.addClass('has-error');
+                $('#passwordHelp').text("passwords do not match!");
+                return
+              } else if (data.password.length < 6) {
+                passwordForm.addClass('has-error');
+                $('#passwordHelp').text("password must be at least 6 characters");
+                return
+              }
+
+              // POST the change password data
+              var passwordEndpoint = userDetail + "set_password/";
+              $.post(passwordEndpoint, data, function(result) {
+                $("#setPasswordModal").modal('hide');
+              });
+
+              return false;
+            });
+
+            // Helper function to hide elements
+            function hide(elem) {
+              elem.addClass("hidden").removeClass("show");
+            }
+
+            // Helper function to show elements
+            function show(elem) {
+              elem.addClass("show").removeClass("hidden");
+            }
+
+            // Handle the profile submission
+            profileForm.submit(function(e) {
+                e.preventDefault();
+
+                // Get the form data
+                var data = _.object(profileForm.serializeArray()
+                                        .map(function(v) {
+                                            return [v.name, v.value];
+                                        }));
+
+                data.profile = {
+                    "biography": data.biography,
+                    "organization": data.organization,
+                    "location": data.location
+                };
+
+                delete data.biography;
+                delete data.organization;
+                delete data.location;
+
+                $.ajax({
+                    "url": userDetail,
+                    "method": "PUT",
+                    "data": JSON.stringify(data),
+                    "contentType": "application/json"
+                }).done(function(data) {
+
+                    // Update DOM with data requested
+                    $("#profileFullName").text(data.first_name + " " + data.last_name);
+                    $("#profileUsername").text(data.username);
+                    $("#profileEmail").text(data.email);
+                    $("#profileOrganization").text(data.profile.organization);
+                    $("#profileLocation").text(data.profile.location);
+
+                    $("#editProfileModal").modal("hide");
+
+                }).fail(function(xhr) {
+
+                    data = xhr.responseJSON;
+
+                    // Set the error
+                    $.each(data, function(key, val) {
+                        var field = $("#"+key);
+                        field.parent().addClass("has-error");
+                        field.parent().find('.help-block').text(val);
+                    });
+
+                });
+
+                return false;
+            });
+
+            // Reset form on close
+            $("#editProfileModal").on("hide.bs.modal", function(e) {
+                resetEditProfileModal();
+            });
+
+            // Helper function to reset edit profile modal
+            function resetEditProfileModal() {
+                profileForm.find('.form-group').removeClass("has-error");
+                profileForm.find('.help-block').text("");
+            }
+
+        });
+    })(jQuery);
+  </script>
+{% endblock %}

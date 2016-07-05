@@ -12,7 +12,7 @@
         </button>
         <a class="navbar-brand" href="/">
           <img class="img-brand" src="{% static 'img/logo.png' %}" alt="" />
-          Minimum Entropy
+          Minimum Entropy <sup><small>beta</small></sup>
         </a>
       </div>
       <div class="collapse navbar-collapse">
@@ -20,14 +20,13 @@
         <!-- Left Nav -->
         {% if user.is_authenticated %}
         <ul class="nav navbar-nav">
-          <li><a href="{% url 'app-root' %}">Casebase</a></li>
+          <li><a href="{# url 'app-root' #}">Casebase</a></li>
           <li class="dropdown">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reasoning Tools <span class="caret"></span></a>
             <ul class="dropdown-menu">
-              <li><a href="{% url 'app-reasoner-prototype' %}"><i class="fa fa-cube"></i> Reasoner Prototype</a></li>
-              <li><a href="{% url 'app-similarity' %}"><i class="fa fa-puzzle-piece"></i> Similarity</a></li>
+              <li><a href="{# url 'app-reasoner-prototype' #}"><i class="fa fa-cube"></i> Reasoner Prototype</a></li>
+              <li><a href="{# url 'app-similarity' #}"><i class="fa fa-puzzle-piece"></i> Similarity</a></li>
               <li role="separator" class="divider"></li>
-              <li><a href="{% url 'app-debug' %}"><i class="fa fa-plug"></i> Debugging</a></li>
             </ul>
           </li>
         </ul>
@@ -64,7 +63,7 @@
                 </a>
               </li>
               <li>
-                <a href="{# url 'auth:logout' #}">
+                <a href="{% url 'logout' %}">
                   <i class="fa fa-sign-out"></i>  Log out
                 </a>
               </li>
@@ -81,7 +80,7 @@
           </li>
           {% else %}
           <li>
-            <a href="{# url 'social:begin' 'google-oauth2' #}">
+            <a href="{% url 'social:begin' 'google-oauth2' %}">
               <i class="fa fa-google-plus-square"></i>
               Log in with Google
             </a>

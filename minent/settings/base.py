@@ -108,8 +108,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
 
     # Third party apps
+    'social.apps.django_app.default',
+    'rest_framework',
 
     # Minimum Entropy apps
+    'stream',   # Implements an activity stream for the app
+    'users',    # Handles Google OAuth and Profiles
+    # 'fugato',   # Initial query collection app
+    # 'voting',   # Handles the upvoting and downvoting of objects
 ]
 
 ## Request Handling
@@ -122,6 +128,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ## Internationalization
@@ -190,6 +197,50 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+## Support for Social Auth authentication backends
+AUTHENTICATION_BACKENDS = (
+    'social.backends.google.GoogleOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+## Social authentication strategy
+SOCIAL_AUTH_STRATEGY = 'social.strategies.django_strategy.DjangoStrategy'
+SOCIAL_AUTH_STORAGE = 'social.apps.django_app.default.models.DjangoStorage'
+
+## Google-specific authentication keys
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = environ_setting("GOOGLE_OAUTH2_CLIENT_ID", "")
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = environ_setting("GOOGLE_OAUTH2_CLIENT_SECRET", "")
+
+LOGIN_REDIRECT_URL = "home"
+
+## Error handling
+SOCIAL_AUTH_LOGIN_ERROR_URL = "login"
+SOCIAL_AUTH_GOOGLE_OAUTH2_SOCIAL_AUTH_RAISE_EXCEPTIONS = False
+SOCIAL_AUTH_RAISE_EXCEPTIONS = False
+
+##########################################################################
+## Django REST Framework
+##########################################################################
+
+REST_FRAMEWORK = {
+
+    ## API Authentication
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework.authentication.SessionAuthentication',
+    ),
+
+    ## Default permissions to access the API
+    'DEFAULT_PERMISSION_CLASSES': (
+        'rest_framework.permissions.IsAuthenticated',
+    ),
+
+    ## Pagination in the API
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGINATE_BY': 50,
+    'PAGINATE_BY_PARAM': 'per_page',
+    'MAX_PAGINATE_BY': 200,
+}
 
 ##########################################################################
 ## Logging and Error Reporting
