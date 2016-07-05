@@ -1,0 +1,11 @@
+site_name: Minimum Entropy Documentation
+repo_name: GitHub
+repo_url: https://github.com/DistrictDataLabs/minimum-entropy
+site_description: A question/answer web application to create a data science knowledge base.
+site_author: District Data Labs
+copyright: Copyright &copy; 2016 District Data Labs, All Rights Reserved
+theme: readthedocs
+
+pages:
+- 'Introduction': 'index.md'
+- 'About': 'about.md'
