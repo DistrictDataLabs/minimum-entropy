@@ -15,7 +15,7 @@ DJANGO_POSTFIX := --settings=$(DJANGO_SETTINGS_MODULE) --pythonpath=$(PYTHONPATH
 
 # Development Settings
 LOCAL_SETTINGS := development
-DJANGO_LOCAL_SETTINGS_MODULE = $(PROJECT).settings
+DJANGO_LOCAL_SETTINGS_MODULE = $(PROJECT).settings.$(LOCAL_SETTINGS)
 DJANGO_LOCAL_POSTFIX := --settings=$(DJANGO_LOCAL_SETTINGS_MODULE) --pythonpath=$(PYTHONPATH)
 
 # Testing Settings

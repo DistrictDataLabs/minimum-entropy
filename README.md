@@ -119,6 +119,6 @@ The versioning uses a three part version system, "a.b.c" - "a" represents a majo
 [travis_href]: https://travis-ci.org/DistrictDataLabs/minimum-entropy
 [waffle_img]: https://badge.waffle.io/DistrictDataLabs/minimum-entropy.png?label=ready&title=Ready
 [waffle_href]: https://waffle.io/DistrictDataLabs/minimum-entropy
-[coveralls_img]: https://coveralls.io/repos/DistrictDataLabs/minimum-entropy/badge.svg
-[coveralls_href]: https://coveralls.io/r/DistrictDataLabs/minimum-entropy
+[coveralls_img]: https://coveralls.io/github/DistrictDataLabs/minimum-entropy?branch=master
+[coveralls_href]: https://coveralls.io/repos/github/DistrictDataLabs/minimum-entropy/badge.svg?branch=master
 [answers.jpg]: https://flic.kr/p/82Ub7z
