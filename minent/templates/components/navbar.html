@@ -21,14 +21,6 @@
         {% if user.is_authenticated %}
         <ul class="nav navbar-nav">
           <li><a href="{# url 'app-root' #}">Casebase</a></li>
-          <li class="dropdown">
-            <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Reasoning Tools <span class="caret"></span></a>
-            <ul class="dropdown-menu">
-              <li><a href="{# url 'app-reasoner-prototype' #}"><i class="fa fa-cube"></i> Reasoner Prototype</a></li>
-              <li><a href="{# url 'app-similarity' #}"><i class="fa fa-puzzle-piece"></i> Similarity</a></li>
-              <li role="separator" class="divider"></li>
-            </ul>
-          </li>
         </ul>
         {% endif %}
 
@@ -50,7 +42,7 @@
                 </a>
               </li>
               <li>
-                <a href="{# url 'api:api-root' #}">
+                <a href="{% url 'api:api-root' %}">
                   <i class="fa fa-cogs"></i> API Docs
                 </a>
               </li>

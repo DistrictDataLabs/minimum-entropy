@@ -80,6 +80,6 @@ class HeartbeatViewSet(viewsets.ViewSet):
     def list(self, request):
         return Response({
             "status": "ok",
-            "version": kyudo.get_version(),
+            "version": minent.get_version(),
             "timestamp": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
         })
