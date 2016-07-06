@@ -103,16 +103,18 @@ The image used in this README, [Answers][answers.jpg] by [Francisco Martins](htt
 
 ## Changelog
 
-The release versions that are sent to the Python package index (PyPI) are also tagged in Github. You can see the tags through the Github web application and download the tarball of the version you'd like. Additionally PyPI will host the various releases of Trinket (eventually).
+The release versions that are sent to the Python package index (PyPI) are also tagged in Github. You can see the tags through the Github web application and download the tarball of the version you'd like. Additionally PyPI will host the various releases of Minimum Entropy (eventually).
 
 The versioning uses a three part version system, "a.b.c" - "a" represents a major release that may not be backwards compatible. "b" is incremented on minor releases that may contain extra features, but are backwards compatible. "c" releases are bug fixes or other micro changes that developers should feel free to immediately update to.
 
 
-### Version 0.1
+### Version 1.0 Beta 1
 
-* **tag**: [v0.1](#)
-* **deployment**: Pending
-* **commit**: [pending](#)
+* **tag**: [v1.0b1](https://github.com/DistrictDataLabs/minimum-entropy/releases/tag/v1.0b1)
+* **deployment**: Tuesday, July 5, 2016
+* **commit**: [see tag](#)
+
+This beta release for Version 1.0 simply moves the code over from Kyudo and modifies it to remove the research components and only present a question and answer system. Things are not perfect since the app was designed for a different research project. However, the core functionality - asking questions and answering them with Markdown, as well as up and down voting exists. This is a good start to beta to our faculty to see what they think!
 
 <!-- References -->
 [travis_img]: https://travis-ci.org/DistrictDataLabs/minimum-entropy.svg
