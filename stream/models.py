@@ -141,7 +141,7 @@ class StreamItem(models.Model):
     def get_theme_html(self):
         return self.get_object_html(self.theme)
 
-    def __unicode__(self):
+    def __str__(self):
         context = {
             'actor': self.actor.username,
             'verb': self.get_verb_display(),

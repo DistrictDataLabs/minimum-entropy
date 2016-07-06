@@ -47,7 +47,7 @@ class Vote(TimeStampedModel):
     # Set a custom manager for the Vote object
     objects   = VotingManager()
 
-    def __unicode__(self):
+    def __str__(self):
         action = {
             -1: "down voted",
             0:  "no voted",

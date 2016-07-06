@@ -69,5 +69,5 @@ class Profile(models.Model):
         """
         return reverse('api:user-detail', args=(self.pk,))
 
-    def __unicode__(self):
+    def __str__(self):
         return self.full_email

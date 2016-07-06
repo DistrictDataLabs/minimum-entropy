@@ -112,7 +112,7 @@ class StreamItemModelTest(TestCase):
 
         expected = u'jdoe joined 1 minute ago'
 
-        self.assertEqual(unicode(event), expected)
+        self.assertEqual(str(event), expected)
 
     def test_actor_verb_target(self):
         """
@@ -128,7 +128,7 @@ class StreamItemModelTest(TestCase):
 
         expected = u'jdoe asked Why is the sky blue? 1 minute ago'
 
-        self.assertEqual(unicode(event), expected)
+        self.assertEqual(str(event), expected)
 
     def test_actor_verb_theme(self):
         """
@@ -144,7 +144,7 @@ class StreamItemModelTest(TestCase):
 
         expected = u'jdoe up voted Why is the sky blue? 1 minute ago'
 
-        self.assertEqual(unicode(event), expected)
+        self.assertEqual(str(event), expected)
 
     @skip("annotation doesn't exist in minimum-entropy")
     def test_actor_verb_target_theme(self):
@@ -162,4 +162,4 @@ class StreamItemModelTest(TestCase):
 
         expected = u'jdoe annotated sky on Why is the sky blue? 1 minute ago'
 
-        self.assertEqual(unicode(event), expected)
+        self.assertEqual(str(event), expected)

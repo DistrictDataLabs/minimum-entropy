@@ -88,5 +88,5 @@ class Answer(TimeStampedModel):
         """
         return reverse('api:answer-detail', args=(self.pk,))
 
-    def __unicode__(self):
+    def __str__(self):
         return self.text

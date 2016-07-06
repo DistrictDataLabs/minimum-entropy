@@ -198,6 +198,9 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+LOGIN_URL = '/login/google-oauth2/'
+LOGIN_REDIRECT_URL = '/app'
+
 ## Support for Social Auth authentication backends
 AUTHENTICATION_BACKENDS = (
     'social.backends.google.GoogleOAuth2',
