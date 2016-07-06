@@ -29,14 +29,14 @@ class QuestionManager(models.Manager):
     def dedupe(self, raise_for_exceptions=False, **kwargs):
         """
         Essentially a GET or CREATE method that checks if a duplicate
-        question already exists in the database by its hash. If
+        question already exists in the database by its signature. If
         raise_for_exceptions is True, then will raise a DuplicateQuestion
         exception, otherwise it will return None.
 
         Returns question, created where created is a Boolean
         """
-        hash  = signature(kwargs['text'])
-        query = self.filter(hash=hash)
+        qsig = signature(kwargs['text'])
+        query = self.filter(signature=qsig)
         if query.exists():
             if raise_for_exceptions:
                 raise DuplicateQuestion()

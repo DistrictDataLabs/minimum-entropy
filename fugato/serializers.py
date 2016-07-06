@@ -69,8 +69,8 @@ class QuestionSerializer(serializers.HyperlinkedModelSerializer):
         """
 
         ## Check to make sure there is no duplicate
-        hash = signature(validated_data['text'])
-        if Question.objects.filter(hash=hash).exists():
+        qsig = signature(validated_data['text'])
+        if Question.objects.filter(signature=qsig).exists():
             raise DuplicateQuestion()
 
         ## Create the model as before

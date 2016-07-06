@@ -31,7 +31,7 @@ from fugato.models import Question, Answer
 
 @receiver(pre_save, sender=Question)
 def question_normalization(sender, instance, *args, **kwargs):
-    instance.hash = signature(instance.text)
+    instance.signature = signature(instance.text)
 
 
 @receiver(pre_save, sender=Question)

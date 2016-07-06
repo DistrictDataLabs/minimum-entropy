@@ -122,7 +122,7 @@ class StreamItem(models.Model):
     def get_theme_url(self):
         return self.get_absolute_url(self.theme)
 
-    def get_object_html(self, obj):
+    def get_object_html(self, obj, strfunc=str):
         """
         Returns an HTML representation of an object, basically an anchor
         to the object's absolute URL or just the plain string representation.
@@ -130,7 +130,7 @@ class StreamItem(models.Model):
         href = self.get_object_url(obj)
         if href is None:
             return strfunc(obj)
-        return u'<a href="%s" title="%s">%s</a>' % (href, str(obj), str(obj))
+        return u'<a href="%s" title="%s">%s</a>' % (href, strfunc(obj), strfunc(obj))
 
     def get_actor_html(self):
         return self.get_object_html(self.actor, lambda actor: actor.username)

@@ -67,7 +67,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
         Note that the upvotes and downvotes keys are required by the front-end
         """
         question   = self.get_object()
-        serializer = VotingSerializer(data=request.DATA, context={'request': request})
+        serializer = VotingSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
 
             kwargs = {
@@ -115,7 +115,7 @@ class AnswerViewSet(viewsets.ModelViewSet):
         Note that the upvotes and downvotes keys are required by the front-end
         """
         answer   = self.get_object()
-        serializer = VotingSerializer(data=request.DATA, context={'request': request})
+        serializer = VotingSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
 
             kwargs = {

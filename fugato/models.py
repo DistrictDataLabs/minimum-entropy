@@ -39,7 +39,7 @@ class Question(TimeStampedModel):
     signature = models.CharField( max_length=28, unique=True, editable=False )     # The normalized signature
     details  = models.TextField( help_text="Edit in Markdown", **nullable )       # Additional details about the question
     details_rendered = models.TextField( editable=False, **nullable )             # HTML rendered details text from MD
-    related  = models.ManyToManyField( 'self', editable=True )                    # Links between related questions
+    related  = models.ManyToManyField( 'self', editable=True, blank=True )        # Links between related questions
     author   = models.ForeignKey( 'auth.User', related_name='questions' )         # The author of the question
     votes    = GenericRelation( Vote, related_query_name='questions' )            # Vote on whether or not the question is relevant
 
