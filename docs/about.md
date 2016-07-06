@@ -53,6 +53,6 @@ The versioning uses a three part version system, "a.b.c" - "a" represents a majo
 
 * **tag**: [v1.0b1](https://github.com/DistrictDataLabs/minimum-entropy/releases/tag/v1.0b1)
 * **deployment**: Tuesday, July 5, 2016
-* **commit**: [see tag](#)
+* **commit**: [256a4e6](https://github.com/DistrictDataLabs/minimum-entropy/commit/256a4e6eb45d49b0e1927a3bcd201848f474b5c0)
 
 This beta release for Version 1.0 simply moves the code over from Kyudo and modifies it to remove the research components and only present a question and answer system. Things are not perfect since the app was designed for a different research project. However, the core functionality - asking questions and answering them with Markdown, as well as up and down voting exists. This is a good start to beta to our faculty to see what they think!
