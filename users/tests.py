@@ -110,8 +110,8 @@ class ProfileModelTest(TestCase):
         """
 
         email   = "Jane.Doe@gmail.com"
-        udigest = hashlib.md5(email).hexdigest()
-        ldigest = hashlib.md5(email.lower()).hexdigest()
+        udigest = hashlib.md5(email.encode('utf-8')).hexdigest()
+        ldigest = hashlib.md5(email.lower().encode('utf-8')).hexdigest()
 
         u = User.objects.create_user(username="test", email=email, password="password")
         self.assertIsNotNone(u.profile, "user has no profile?")
@@ -125,7 +125,7 @@ class ProfileModelTest(TestCase):
         Email should be hashed on user create
         """
 
-        digest = hashlib.md5(fixtures['user']['email']).hexdigest()
+        digest = hashlib.md5(fixtures['user']['email'].encode('utf-8')).hexdigest()
 
         self.assertIsNotNone(self.user.profile, "user has no profile?")
         self.assertIsNotNone(self.user.profile.email_hash, "user has no email hash?")
@@ -137,7 +137,7 @@ class ProfileModelTest(TestCase):
         """
 
         newemail = "john.doe@gmail.com"
-        digest   = hashlib.md5(newemail).hexdigest()
+        digest   = hashlib.md5(newemail.encode('utf-8')).hexdigest()
 
         self.user.email = newemail
         self.user.save()

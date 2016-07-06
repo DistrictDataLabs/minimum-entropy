@@ -10,7 +10,7 @@
 # ID: test_utils.py [] benjamin@bengfort.com $
 
 """
-Tests for the utility module of Kyudo
+Tests for the utility module of minimum-entropy
 """
 
 ##########################################################################

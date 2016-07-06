@@ -1,4 +1,4 @@
-# kyudo.utils
+# minent.utils
 # Project level utilities
 #
 # Author:   Benjamin Bengfort <benjamin@bengfort.com>

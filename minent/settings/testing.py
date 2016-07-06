@@ -41,3 +41,6 @@ DATABASES = {
         'PORT': environ_setting('DB_PORT', '5432'),
     },
 }
+
+## Set the static root
+STATIC_ROOT      = 'staticfiles'

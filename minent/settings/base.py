@@ -114,8 +114,8 @@ INSTALLED_APPS = [
     # Minimum Entropy apps
     'stream',   # Implements an activity stream for the app
     'users',    # Handles Google OAuth and Profiles
-    # 'fugato',   # Initial query collection app
-    # 'voting',   # Handles the upvoting and downvoting of objects
+    'fugato',   # Initial query collection app
+    'voting',   # Handles the upvoting and downvoting of objects
 ]
 
 ## Request Handling

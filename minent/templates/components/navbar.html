@@ -20,7 +20,7 @@
         <!-- Left Nav -->
         {% if user.is_authenticated %}
         <ul class="nav navbar-nav">
-          <li><a href="{# url 'app-root' #}">Casebase</a></li>
+          <li><a href="{% url 'app-root' %}">Latest Questions</a></li>
         </ul>
         {% endif %}
 
@@ -50,7 +50,7 @@
               {% endif %}
               <li class="dropdown-header">User Settings</li>
               <li>
-                <a href="{# url 'profile' #}">
+                <a href="{% url 'profile' %}">
                   <i class="fa fa-user"></i> View Profile
                 </a>
               </li>

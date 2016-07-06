@@ -22,7 +22,6 @@ from django.test import TestCase
 from stream.models import *
 from fugato.models import *
 from voting.models import *
-from freebase.models import *
 from django.contrib.auth.models import User
 from django.utils import timezone as datetime
 from datetime import timedelta
@@ -72,7 +71,6 @@ class StreamItemModelTest(TestCase):
 
         fixtures['annotation']['user'] = self.user
         fixtures['annotation']['question'] = self.question
-        self.annotation = TopicAnnotation.objects.create(**fixtures['annotation'])
 
     def one_minute_ago(self):
         """
@@ -148,6 +146,7 @@ class StreamItemModelTest(TestCase):
 
         self.assertEqual(unicode(event), expected)
 
+    @skip("annotation doesn't exist in minimum-entropy")
     def test_actor_verb_target_theme(self):
         """
         Test a StreamItem with an actor, verb, theme and target

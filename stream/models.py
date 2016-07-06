@@ -62,7 +62,6 @@ class StreamItem(models.Model):
             ('downvote', 'down voted'),
             ('ask', 'asked'),
             ('answer', 'answered'),
-            ('annotate', 'annotated'),
         )
 
     ## Relationship to the user (the actor)
