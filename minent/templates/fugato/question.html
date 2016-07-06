@@ -1,0 +1,470 @@
+{% extends 'page.html' %}
+{% load staticfiles %}
+{% load votable %}
+{# Displays all the information about a particular question #}
+
+  {% block stylesheets %}
+    {{ block.super }}
+    <style type="text/css">
+      .question-sidebar {
+        margin-top: 18px;
+      }
+
+      .question-actions {
+        margin: 10px 0;
+      }
+
+      .question-details-form {
+        margin-bottom: 20px;
+      }
+
+      .ambiguous {
+        cursor: help;
+      }
+
+      #questionHeader, #writeAnswer, .answer {
+        border-bottom: 1px solid #b7b7b7;
+      }
+
+      .answer, #writeAnswer, #scientificDetails {
+        padding: 14px 0;
+      }
+
+      .answer-text {
+        margin: 18px 0 18px 0;
+      }
+
+    </style>
+  {% endblock %}
+
+  {% block content %}
+    <div class="container">
+      <!-- Questions get a three column layout -->
+      <div class="row">
+
+        <!-- Left Column -->
+        <div class="col-md-2 question-sidebar">
+          <h5>Question History</h5>
+          <ul class="list-unstyled">
+            <li>Question history has not been implemented yet.</li>
+          </ul>
+        </div><!-- end left column -->
+
+        <!-- Middle Column -->
+        <div class="col-md-7">
+
+          <!-- question header -->
+          <div id="questionHeader">
+            <h2 id="questionText">{{ question.text }}</h2>
+            <p class="text-muted">
+              <small>asked on {{ question.created|date }} by {{ question.author.get_full_name }}</small>
+            </p>
+
+            <!-- question actions -->
+            <div class="question-actions">
+              {% current_user_vote question as voted %}
+
+              <button class="btn btn-default btn-xs btn-vote{% if voted == 1 %} btn-warning{% endif %}"
+                      type="button" data-vote="1" data-candidate="{{ question.get_api_detail_url }}">
+                <i class="fa fa-thumbs-up"></i> |
+                <span class="vote-count">{{ question.votes.upvotes.count }}</span>
+              </button>
+
+              <button class="btn btn-default btn-xs btn-vote{% if voted == -1 %} btn-warning{% endif %}"
+                      type="button" data-vote="-1" data-candidate="{{ question.get_api_detail_url }}">
+                <i class="fa fa-thumbs-down"></i> |
+                <span class="vote-count">{{ question.votes.downvotes.count }}</span>
+              </button>
+
+              <div class="pull-right">
+                {% if question.author == request.user %}
+                {% if question.details %}
+                <p><a class="edit-details" href="#">Edit Details</a></p>
+                {% else %}
+                <p><a class="edit-details" href="#">Add Details</a></p>
+                {% endif %}
+                {% endif %}
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+            <!-- question details -->
+            <div class="question-details">
+              {% if question.details %}
+              {{ question.details_rendered|safe }}
+              {% endif %}
+            </div>
+
+            <!-- question details form -->
+            <div class="question-details-form">
+              <form role="form" id="formQuestionDetails" class="hidden">
+                <div class="form-group">
+                  <textarea id="txtQuestionDetails" class="form-control" rows="8">{% if question.details %}{{ question.details }}{% endif %}</textarea>
+                  <span class="help-block pull-left">Edit Details in <a href="https://daringfireball.net/projects/markdown/basics" rel="nofollow" target="blank" style="color: #b7b7b7;" title="Markdown Syntax">Markdown</a></span>
+                </div>
+                <div class="pull-right">
+                  <button id="btnCancelEditDetails" type="button" class="btn btn-default btn-sm">Cancel</button>
+                  <button id="btnSubmitEditDetails" type="submit" class="btn btn-primary btn-sm">Update</button>
+                </div>
+                <div class="clearfix"></div>
+              </form>
+            </div>
+
+            <!-- answes meta data -->
+            <div id="answerMeta">
+            {% with count=question.answers.count %}
+              <p class="pull-left"><strong>{{ count }} ANSWER{{ count|pluralize:"S" }}</strong></p>
+              <p class="pull-right"><a href="#writeAnswer">Answer Question</a></p>
+            {% endwith %}
+              <div class="clearfix"></div>
+            </div>
+          </div><!-- end question header -->
+
+          <!-- answers list -->
+          <div id="answerList">
+            {% for answer in question.answers.all %}
+
+            <div class="answer">
+              <!-- answer info (author, date) -->
+              <div class="answer-info">
+                <img title="{{ answer.author }}" src="{{ answer.author.profile.gravatar }}" />
+                {% if answer.author.get_full_name %}
+                <p>answered by <strong>{{ answer.author.get_full_name }}</strong></p>
+                {% else %}
+                <p>answered by <strong>{{ answer.author.username }}</strong></p>
+                {% endif %}
+                <p class="text-muted"><small>answered on {{ answer.created|date }}</small></p>
+              </div>
+
+              <!-- answer text -->
+              <div class="answer-text">
+                {{ answer.text_rendered|safe }}
+              </div>
+
+              <!-- answer actions (vote, comment) -->
+              <div class="answer-actions">
+                {% current_user_vote answer as voted %}
+
+                <button class="btn btn-default btn-xs btn-vote{% if voted == 1 %} btn-warning{% endif %}"
+                        type="button" data-vote="1" data-candidate="{{ answer.get_api_detail_url }}">
+                  <i class="fa fa-thumbs-up"></i> |
+                  <span class="vote-count">{{ answer.votes.upvotes.count }}</span>
+                </button>
+
+                <button class="btn btn-default btn-xs btn-vote{% if voted == -1 %} btn-warning{% endif %}"
+                        type="button" data-vote="-1" data-candidate="{{ answer.get_api_detail_url }}">
+                  <i class="fa fa-thumbs-down"></i> |
+                  <span class="vote-count">{{ answer.votes.downvotes.count }}</span>
+                </button>
+              </div>
+            </div>
+            {% empty %}
+            <div class="answer">
+              <h4 class="text-center">Be the first to answer this question!</h4>
+            </div>
+            {% endfor %}
+          </div><!-- end answer list -->
+
+          <!-- add answer -->
+          <div id="writeAnswer">
+            <div class="question-details-form">
+              <h4>Compose an answer</h4>
+              <form role="form" id="answerForm" class="" action="{% url 'api:answer-list' %}" method="POST">
+                <div class="form-group">
+                  <textarea id="answerText" name="text" class="form-control" rows="8"></textarea>
+                  <span class="help-block pull-left">Edit Answer in <a href="https://daringfireball.net/projects/markdown/basics" rel="nofollow" target="blank" style="color: #b7b7b7;" title="Markdown Syntax">Markdown</a></span>
+                  <span class="help-block pull-left" id="textFormError"></span>
+                </div>
+                <div class="pull-right">
+                  <input type="hidden" id="answerQuestion" name="question" class="form-control" value="{{ question.get_api_detail_url }}" />
+                  <button id="submitAnswer" type="submit" class="btn btn-primary btn-sm">
+                    Post your Answer
+                  </button>
+                </div>
+                <div class="clearfix"></div>
+              </form>
+            </div>
+          </div><!-- end write answer -->
+
+          <div class="clearfix"></div>
+        </div><!-- end middle column -->
+
+        <!-- Right column -->
+        <div class="col-md-3 question-sidebar">
+          <h5>Related Questions</h5>
+          <ul class="list-unstyled">
+            {% for related in question.related.all %}
+            <li><a href="{{ related.get_absolute_url }}">{{ related }}</a></li>
+            {% empty %}
+            <li>Related question discovery has not been implemented yet.</li>
+            {% endfor %}
+          </ul>
+        </div>
+
+      </div>
+    </div>
+  {% endblock %}
+
+  {% block modals %}
+    {{ block.super }}
+  {% endblock %}
+
+  {% block javascripts %}
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.10.3/moment.min.js"></script>
+    {{ block.super }}
+
+    <script type="text/template" class="template" id="answerTemplate">
+      <div class="answer">
+        <!-- answer info (author, date) -->
+        <div class="answer-info">
+          <img title="<%= author %>" src="<%= gravatar %>" />
+          <p>answered by <strong><%= author %></strong></p>
+          <p class="text-muted"><small>answered on <%= created %></small></p>
+        </div>
+
+        <!-- answer text -->
+        <div class="answer-text">
+          <%= text_rendered %>
+        </div>
+
+        <!-- answer actions (vote, comment) -->
+        <div class="answer-actions">
+          <button class="btn btn-default btn-xs btn-vote"
+                  type="button" data-vote="1" data-candidate="<%= url %>">
+            <i class="fa fa-thumbs-up"></i> |
+            <span class="vote-count">0</span>
+          </button>
+
+          <button class="btn btn-default btn-xs btn-vote"
+                  type="button" data-vote="-1" data-candidate="<%= url %>">
+            <i class="fa fa-thumbs-down"></i> |
+            <span class="vote-count">0</span>
+          </button>
+        </div>
+      </div>
+    </script>
+
+    <script type="text/javascript">
+      (function($) {
+        $(document).ready(function() {
+
+          // Configure the question application
+          var csrfToken   = $('input[name="csrfmiddlewaretoken"]').val();
+          $.ajaxSetup({headers: {"X-CSRFToken": csrfToken}});
+          console.log("question application ready")
+
+          var endpoint             = "{{ question.get_api_detail_url }}";
+          var questionText         = $("#questionText").text();
+          var questionDetails      = $("div.question-details");
+          var detailsForm          = $("form#formQuestionDetails");
+          var txtQuestionDetails   = $("#txtQuestionDetails");
+          var btnEditDetails       = $(".edit-details");
+          var btnCancelEditDetails = $("#btnCancelEditDetails");
+          var btnSubmitEditDetails = $("#btnSubmitEditDetails");
+
+          ////////////////////////////////////////////////////////////////
+          /// Handle the Details editing
+          ////////////////////////////////////////////////////////////////
+
+          // Handle edit details link press (start editing)
+          btnEditDetails.click(function(e) {
+            e.preventDefault();
+            questionDetails.addClass("hidden").removeClass("show");
+            detailsForm.addClass("show").removeClass("hidden");
+            $(".edit-details").addClass("hidden").removeClass("show");
+            return false;
+          });
+
+          // Handle the cancel edit button press (stop editing)
+          btnCancelEditDetails.click(function(e) {
+            questionDetails.addClass("show").removeClass("hidden");
+            detailsForm.addClass("hidden").removeClass("show");
+            $(".edit-details").addClass("show").removeClass("hidden");
+
+            // Reload the text input with the data
+            $.getJSON(endpoint, function(data) {
+              txtQuestionDetails.val(data.details);
+            });
+
+            return false;
+          });
+
+          // Handle the submission of the details form (PUT changes)
+          detailsForm.submit(function(e) {
+            e.preventDefault();
+
+            // Get the data from the text input and validate
+            var details = txtQuestionDetails.val();
+            if (!details) {
+              console.log("Nothing to submit");
+              return
+            }
+
+            // Disable the details form
+            detailsForm.find("textarea, button").attr('disabled', 'disabled');
+
+            // Put the data to the server
+            $.ajax({
+              url: endpoint,
+              type: 'PUT',
+              data: {
+                'text': questionText,
+                'details': details
+              },
+              success: function(data) {
+                // Set the details and the details_rendered
+                txtQuestionDetails.val(data.details);
+                questionDetails.html(data.details_rendered);
+
+                $(".edit-details").text("Edit Details");
+                $(".edit-details").addClass("show").removeClass("hidden");
+
+                // Swap and show the new area
+                detailsForm.find("textarea, button").removeAttr("disabled");
+                questionDetails.addClass("show").removeClass("hidden");
+                detailsForm.addClass("hidden").removeClass("show");
+              }
+            });
+
+
+            return false;
+          });
+
+          ////////////////////////////////////////////////////////////////
+          /// Write or Update answers
+          ////////////////////////////////////////////////////////////////
+
+          var createAnswerEndpoint = "{% url 'api:answer-list' %}";
+          var answerTmpl = _.template($("#answerTemplate").html());
+
+          // Handle answer form submit
+          $("#answerForm").submit(function(e) {
+            e.preventDefault();
+
+            // Set form state
+            var form = $(this);
+            form.find("button").attr('disabled', 'disabled');
+
+            // Collect data from form
+            var formData = getFormData(form);
+
+            // Select endpoint (important for when we update answers)
+            var endpoint = form.attr("action");
+            var method   = form.attr("method");
+
+            // Send the data to the endpoint
+            $.ajax({
+              url: endpoint,
+              method: method,
+              data: formData
+            }).done(function(data) {
+
+              console.log(data);
+              // Reset the form state
+              form.find("button").removeAttr('disabled');
+              form.find("textarea").val("");
+
+              // Append the answer (in the future, update answer)
+              var full_name = data.author.first_name + " " + data.author.last_name;
+              full_name     = full_name.trim();
+
+              var answer    = $(answerTmpl({
+                  author: full_name ? full_name : data.author.username,
+                  gravatar: data.author.profile.gravatar,
+                  text_rendered: data.text_rendered,
+                  url: data.url,
+                  created: moment(data.created).format("MMMM D, YYYY")
+                }));
+              answer.find('button.btn-vote').click(onVote)
+              $("#answerList").append(answer);
+
+            }).fail(function(jqxhr, status, error) {
+              // Reset the form state
+              form.find("button").removeAttr('disabled');
+
+              // Set error state
+              form.addClass('has-error');
+
+              $.each(jqxhr.responseJSON, function(field, errors) {
+                block = $("span#" + field + "FormError");
+                if (block) {
+                  block.text(errors[0]);
+                }
+              });
+
+              console.log(jqxhr.responseJSON);
+              console.log(error);
+            });
+
+
+
+            return false;
+          });
+
+          ////////////////////////////////////////////////////////////////
+          /// Voting
+          ////////////////////////////////////////////////////////////////
+
+          // Handle the question voting buttons
+          $("button.btn-vote").click(onVote);
+
+          function onVote(e) {
+            e.preventDefault();
+
+            var target = $(this);
+            var data   = target.data();
+            var vote_endpoint = data.candidate + "vote/";
+            var parent = target.parent();
+
+            $.post(vote_endpoint, data, function(result) {
+
+              // Update the buttons according to the response
+              $.each(parent.find("button.btn-vote"), function(idx, obj) {
+                obj  = $(obj);
+                data = obj.data();
+
+                // Handle the indication class
+                if (data.vote == result.vote) {
+                  obj.addClass("btn-warning");
+                } else {
+                  obj.removeClass("btn-warning");
+                }
+
+                // Handle the count inside of the span
+                var span = obj.find("span.vote-count");
+                if (data.vote == 1) {
+                  span.text(result.upvotes);
+                } else if (data.vote == -1) {
+                  span.text(result.downvotes);
+                } else {
+                  span.text("0");
+                }
+
+              });
+
+            });
+
+            return false;
+
+          }
+
+          // Helper function to hide elements
+          function hide(elem) {
+            elem.addClass("hidden").removeClass("show");
+          }
+
+          // Helper function to show elements
+          function show(elem) {
+            elem.addClass("show").removeClass("hidden");
+          }
+
+          // Helper function to collect form data
+          function getFormData(form) {
+            var data = form.serializeArray();
+            return _.object(data.map(function(v) { return [v.name, v.value]; }));
+          }
+
+        });
+      })(jQuery);
+    </script>
+  {% endblock %}

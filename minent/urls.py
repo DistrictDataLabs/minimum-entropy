@@ -30,14 +30,51 @@ Including another URLconf
 ## Imports
 ##########################################################################
 
-from django.conf.urls import url
+from django.conf.urls import url, include
 from django.contrib import admin
+from rest_framework import routers
 
+from django.views.generic import TemplateView
+
+from users.views import *
+from minent.views import *
+from fugato.views import *
+
+##########################################################################
+## Endpoint Discovery
+##########################################################################
+
+## API
+router = routers.DefaultRouter()
+router.register(r'users', UserViewSet)
+router.register(r'questions', QuestionViewSet)
+router.register(r'answers', AnswerViewSet)
+router.register(r'status', HeartbeatViewSet, "status")
+router.register(r'typeahead', QuestionTypeaheadViewSet, "typeahead")
 
 ##########################################################################
 ## Minimum Entropy URL Patterns
 ##########################################################################
 
 urlpatterns = [
+    ## Admin site
+    url(r'^grappelli/', include('grappelli.urls')),
     url(r'^admin/', admin.site.urls),
+
+    ## Static pages
+    url(r'^$', SplashPage.as_view(), name='home'),
+    url(r'^terms/$', TemplateView.as_view(template_name='site/legal/terms.html'), name='terms'),
+    url(r'^privacy/$', TemplateView.as_view(template_name='site/legal/privacy.html'), name='privacy'),
+
+    ## Application Pages
+    url(r'^app/$', WebAppView.as_view(), name='app-root'),
+    url(r'^q/(?P<slug>[\w-]+)/$', QuestionDetail.as_view(), name='question'),
+
+    ## Authentication
+    url('', include('social.apps.django_app.urls', namespace='social')),
+    url('', include('django.contrib.auth.urls')),
+    url(r'^profile/$', ProfileView.as_view(), name='profile'),
+
+    ## REST API Urls
+    url(r'^api/', include(router.urls, namespace="api")),
 ]

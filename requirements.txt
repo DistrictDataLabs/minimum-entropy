@@ -7,6 +7,9 @@ django-jsonfield==1.0.0
 django-model-utils==2.5
 djangorestframework==3.3.3
 whitenoise==3.2
+gunicorn==19.6.0
+
+## Database Requirements
 dj-database-url==0.4.1
 psycopg2==2.6.1
 
@@ -14,6 +17,15 @@ psycopg2==2.6.1
 Markdown==2.6.6
 bleach==1.4.3
 html5lib==0.9999999
+
+## Social Authentication
+python-social-auth==0.2.19
+defusedxml==0.4.1
+oauthlib==1.1.2
+PyJWT==1.4.0
+python3-openid==3.0.10
+requests-oauthlib==0.6.1
+requests==2.10.0
 
 ## Other Dependencies
 six==1.10.0
@@ -27,3 +39,5 @@ coverage==4.1
 pip==8.1.2
 setuptools==24.0.2
 wheel==0.29.0
+
+## The following requirements were added by pip freeze:

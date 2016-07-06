@@ -41,3 +41,18 @@ DATABASES = {
         'PORT': environ_setting('DB_PORT', '5432'),
     },
 }
+
+STATICFILES_STORAGE =  'django.contrib.staticfiles.storage.StaticFilesStorage'
+
+## Content without? side effects
+MEDIA_ROOT         = "/tmp/minimum-entropy/media"
+STATIC_ROOT        = "/tmp/minimum-entropy/static"
+
+##########################################################################
+## Django REST Framework
+##########################################################################
+
+REST_FRAMEWORK['DEFAULT_AUTHENTICATION_CLASSES'] = (
+    'rest_framework.authentication.SessionAuthentication',
+    'rest_framework.authentication.BasicAuthentication',
+)

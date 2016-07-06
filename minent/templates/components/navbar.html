@@ -1,0 +1,85 @@
+{% load staticfiles %}
+
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+          <span class="sr-only">Toggle navigation</span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="navbar-brand" href="/">
+          <img class="img-brand" src="{% static 'img/logo.png' %}" alt="" />
+          Minimum Entropy <sup><small>beta</small></sup>
+        </a>
+      </div>
+      <div class="collapse navbar-collapse">
+
+        <!-- Left Nav -->
+        {% if user.is_authenticated %}
+        <ul class="nav navbar-nav">
+          <li><a href="{% url 'app-root' %}">Latest Questions</a></li>
+        </ul>
+        {% endif %}
+
+        <!-- Right Nav -->
+        <ul class="nav navbar-nav navbar-right">
+          {% if user.is_authenticated %}
+          <li class="dropdown">
+
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+              <img src={{ user.profile.gravatar_icon }} alt="gravatar" title="Gravatar" class="navbar-gravatar" />
+              {% if user.get_full_name %}{{ user.get_full_name }}{% else %}{{ user.username }}{% endif %}
+              <b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              {% if user.is_staff %}
+              <li class="dropdown-header">Administration</li>
+              <li>
+                <a href="{% url 'admin:index' %}">
+                  <i class="fa fa-cog"></i> Management
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'api:api-root' %}">
+                  <i class="fa fa-cogs"></i> API Docs
+                </a>
+              </li>
+              <li class="sep"></li>
+              {% endif %}
+              <li class="dropdown-header">User Settings</li>
+              <li>
+                <a href="{% url 'profile' %}">
+                  <i class="fa fa-user"></i> View Profile
+                </a>
+              </li>
+              <li>
+                <a href="{% url 'logout' %}">
+                  <i class="fa fa-sign-out"></i>  Log out
+                </a>
+              </li>
+            </ul>
+          </li>
+          <li>
+            <button id="btnAskQuestion" type="button"
+                    class="btn btn-primary navbar-btn btn-sm"
+                    style="margin-right: 15px"
+                    data-toggle="modal" data-target="#askQuestionModal">
+              <i class="fa fa-question-circle"></i>
+              Ask Question
+            </button>
+          </li>
+          {% else %}
+          <li>
+            <a href="{% url 'social:begin' 'google-oauth2' %}">
+              <i class="fa fa-google-plus-square"></i>
+              Log in with Google
+            </a>
+          </li>
+          {% endif %}
+        </ul>
+
+      </div><!--/.nav-collapse -->
+    </div><!-- /.container-fluid -->
+  </nav>
