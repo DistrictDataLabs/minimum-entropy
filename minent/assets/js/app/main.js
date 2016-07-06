@@ -18,11 +18,11 @@ function(QuestionCollection, QuestionListView) {
       var csrfToken   = $('input[name="csrfmiddlewaretoken"]').val();
       $.ajaxSetup({headers: {"X-CSRFToken": csrfToken}});
 
-      console.log("KyodoApp is started and ready");
+      console.log("Minimum Entropy is started and ready");
     },
 
     stop: function() {
-      console.log("KyodoApp has stopped")
+      console.log("Minimum Entropy has stopped")
     }
   }
 

@@ -114,8 +114,8 @@ INSTALLED_APPS = [
     # Minimum Entropy apps
     'stream',   # Implements an activity stream for the app
     'users',    # Handles Google OAuth and Profiles
-    # 'fugato',   # Initial query collection app
-    # 'voting',   # Handles the upvoting and downvoting of objects
+    'fugato',   # Initial query collection app
+    'voting',   # Handles the upvoting and downvoting of objects
 ]
 
 ## Request Handling
@@ -197,6 +197,9 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+LOGIN_URL = '/login/google-oauth2/'
+LOGIN_REDIRECT_URL = '/app'
 
 ## Support for Social Auth authentication backends
 AUTHENTICATION_BACKENDS = (

@@ -28,6 +28,7 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 
+from fugato.models import Question ## TODO: remove this
 
 ##########################################################################
 ## Application Views
@@ -80,6 +81,6 @@ class HeartbeatViewSet(viewsets.ViewSet):
     def list(self, request):
         return Response({
             "status": "ok",
-            "version": kyudo.get_version(),
+            "version": minent.get_version(),
             "timestamp": datetime.utcnow().strftime("%Y-%m-%dT%H:%M:%S.%fZ"),
         })
