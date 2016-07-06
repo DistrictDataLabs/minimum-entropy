@@ -28,7 +28,11 @@ from .base import *
 DEBUG            = False
 
 ## Hosts
-ALLOWED_HOSTS    = ['ddl-minent.herokuapp.com', 'minent.districtdatalabs.com']
+ALLOWED_HOSTS    = [
+    'minimum-entropy.herokuapp.com',
+    'minent.districtdatalabs.com',
+    'minimum-entropy.districtdatalabs.com',
+]
 
 ## Static files served by WhiteNoise
 STATIC_ROOT = os.path.join(PROJECT, 'staticfiles')
