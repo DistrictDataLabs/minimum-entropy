@@ -39,10 +39,11 @@ class QuestionSerializer(serializers.HyperlinkedModelSerializer):
                )
 
     page_url = serializers.SerializerMethodField()
+    tags     = serializers.StringRelatedField(many=True)
 
     class Meta:
         model  = Question
-        fields = ('url', 'text', 'author', 'page_url', 'details', 'details_rendered')
+        fields = ('url', 'text', 'author', 'page_url', 'details', 'details_rendered', 'tags')
         extra_kwargs = {
             'url': {'view_name': 'api:question-detail',},
             'details_rendered': {'read_only': True},

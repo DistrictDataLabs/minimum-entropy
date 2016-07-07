@@ -34,6 +34,10 @@
         margin: 18px 0 18px 0;
       }
 
+      #questionTags {
+        margin: 16px 0;
+      }
+
     </style>
   {% endblock %}
 
@@ -110,7 +114,14 @@
               </form>
             </div>
 
-            <!-- answes meta data -->
+            <!-- question tags -->
+            <p id="questionTags">
+              {% for tag in question.tags.all %}
+              <span class="label label-primary">{% if tag.is_synonym %}{{ tag.head_word }}{% else %}{{ tag }}{% endif %}</span>
+              {% endfor %}
+            </p>
+
+            <!-- answers meta data -->
             <div id="answerMeta">
             {% with count=question.answers.count %}
               <p class="pull-left"><strong>{{ count }} ANSWER{{ count|pluralize:"S" }}</strong></p>
