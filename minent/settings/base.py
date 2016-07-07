@@ -115,6 +115,7 @@ INSTALLED_APPS = [
     'stream',   # Implements an activity stream for the app
     'users',    # Handles Google OAuth and Profiles
     'fugato',   # Initial query collection app
+    'tagging',  # Tag questions with labels
     'voting',   # Handles the upvoting and downvoting of objects
 ]
 
