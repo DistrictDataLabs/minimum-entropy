@@ -111,9 +111,9 @@ The versioning uses a three part version system, "a.b.c" - "a" represents a majo
 
 * **tag**: [v1.1b2](https://github.com/DistrictDataLabs/minimum-entropy/releases/tag/v1.1b2)
 * **deployment**: Friday, July 8, 2016
-* **commit**: [see tag](#)
+* **commit**: [ebd553f](https://github.com/DistrictDataLabs/minimum-entropy/commit/ebd553fd8ec202de38fb3f27de2993770ac48960)
 
-The second beta release fixes a couple of bugs with the older profile system, and a lingering topic item from Kyudo. This release goes a bit further and creates a tagging system for questions (replacing topics) and allows for the ordering and search of questions in a more meaningful way. Hopefully this is the last official Beta version and Minimum Entropy can actually start to be used in a more meaningful way. 
+The second beta release fixes a couple of bugs with the older profile system, and a lingering topic item from Kyudo. This release goes a bit further and creates a tagging system for questions (replacing topics) and allows for the ordering and search of questions in a more meaningful way. Hopefully this is the last official Beta version and Minimum Entropy can actually start to be used in a more meaningful way.
 
 ### Version 1.0 Beta 1
 

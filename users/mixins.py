@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: mixins.py [] benjamin@bengfort.com $
+# ID: mixins.py [70aac9d] benjamin@bengfort.com $
 
 """
 Authentication Mixins

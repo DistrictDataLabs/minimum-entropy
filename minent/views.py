@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: views.py [] benjamin@bengfort.com $
+# ID: views.py [24fa113] benjamin@bengfort.com $
 
 """
 Views for the project and application that don't require models

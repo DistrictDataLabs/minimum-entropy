@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: tests.py [] benjamin@bengfort.com $
+# ID: tests.py [70aac9d] benjamin@bengfort.com $
 
 """
 Testing the Activity Stream library

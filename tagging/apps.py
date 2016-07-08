@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: apps.py [] benjamin@bengfort.com $
+# ID: apps.py [c5d00aa] benjamin@bengfort.com $
 
 """
 Describes the tagging application to Django

@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: views.py [] benjamin@bengfort.com $
+# ID: views.py [8eae6c4] benjamin@bengfort.com $
 
 """
 Views for the Fugato app

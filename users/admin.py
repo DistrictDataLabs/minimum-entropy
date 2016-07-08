@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: admin.py [] benjamin@bengfort.com $
+# ID: admin.py [70aac9d] benjamin@bengfort.com $
 
 """
 Update the admin interface with the Profile

@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: serializers.py [] benjamin@bengfort.com $
+# ID: serializers.py [6eb4b7c] benjamin@bengfort.com $
 
 """
 Serialization for the REST API endpoints for tags.

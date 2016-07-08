@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: serializers.py [] benjamin@bengfort.com $
+# ID: serializers.py [70aac9d] benjamin@bengfort.com $
 
 """
 Serializers for the members models

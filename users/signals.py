@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: signals.py [] benjamin@bengfort.com $
+# ID: signals.py [70aac9d] benjamin@bengfort.com $
 
 """
 Signals management for the Users app

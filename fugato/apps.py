@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: apps.py [] benjamin@bengfort.com $
+# ID: apps.py [8eae6c4] benjamin@bengfort.com $
 
 """
 Describes the Fugato application for Django

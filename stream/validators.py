@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: validators.py [] benjamin@bengfort.com $
+# ID: validators.py [70aac9d] benjamin@bengfort.com $
 
 """
 Custom validators for the activity stream

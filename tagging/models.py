@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: models.py [] benjamin@bengfort.com $
+# ID: models.py [c5d00aa] benjamin@bengfort.com $
 
 """
 Models for the tagging app

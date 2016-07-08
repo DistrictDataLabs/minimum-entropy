@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: models.py [] benjamin@bengfort.com $
+# ID: models.py [8eae6c4] benjamin@bengfort.com $
 
 """
 ContentTypes based generic models for voting on anything!

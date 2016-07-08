@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: admin.py [] benjamin@bengfort.com $
+# ID: admin.py [c5d00aa] benjamin@bengfort.com $
 
 """
 Registration of tag model management for Django Admin CMS

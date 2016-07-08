@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: test_init.py [] benjamin@bengfort.com $
+# ID: test_init.py [737e142] benjamin@bengfort.com $
 
 """
 Initialization tests for the Minimum Entropy project

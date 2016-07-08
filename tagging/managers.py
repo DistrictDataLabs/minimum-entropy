@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: managers.py [] benjamin@bengfort.com $
+# ID: managers.py [c5d00aa] benjamin@bengfort.com $
 
 """
 Custom query methods for Tag objects and their relationships.
