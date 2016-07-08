@@ -18,7 +18,7 @@ Custom managers for the fugato models
 ##########################################################################
 
 from django.db import models
-from minent.utils import signature
+from minent.utils import signature, normalize_query
 
 
 ##########################################################################
@@ -47,6 +47,19 @@ class QuestionQuerySet(models.query.QuerySet):
         Returns questions annotated with the number of answers they have.
         """
         return self.annotate(num_answers=models.Count('answers'))
+
+    def search(self, terms):
+        """
+        Produces an icontains lookup on the question title.
+        """
+        query = None # Query to search for every search term
+
+        # Build the query with Q and icontains
+        for term in normalize_query(terms):
+            q = models.Q(text__icontains=term) | models.Q(details__icontains=term)
+            query = q if query is None else query & q
+
+        return self.filter(query)
 
 
 ##########################################################################
@@ -90,6 +103,12 @@ class QuestionManager(models.Manager):
         Returns questions annotated with the number of answers they have.
         """
         return self.get_queryset().count_answers()
+
+    def search(self, terms):
+        """
+        Produces an icontains lookup on the question title.
+        """
+        return self.get_queryset().search(terms)
 
     def get_queryset(self):
         """
