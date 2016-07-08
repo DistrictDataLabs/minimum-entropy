@@ -54,6 +54,12 @@
               </div>
             </div>
           {% endfor %}
+
+          {% if is_paginated %}
+            {% load paginator %}
+            {% paginator 3 %}
+          {% endif %}
+
         </div><!-- end right content -->
 
       </div>

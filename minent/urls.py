@@ -67,7 +67,7 @@ urlpatterns = [
     url(r'^privacy/$', TemplateView.as_view(template_name='site/legal/privacy.html'), name='privacy'),
 
     ## Application Pages
-    url(r'^app/$', WebAppView.as_view(), name='app-root'),
+    url(r'^questions/$', QuestionList.as_view(), name='question-list'),
     url(r'^q/(?P<slug>[\w-]+)/$', QuestionDetail.as_view(), name='question'),
 
     ## Authentication

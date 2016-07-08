@@ -28,7 +28,6 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import AllowAny
 
-from fugato.models import Question ## TODO: remove this
 
 ##########################################################################
 ## Application Views
@@ -49,7 +48,7 @@ class SplashPage(TemplateView):
         serve normal template view as expected.
         """
         if request.user.is_authenticated():
-            return redirect('app-root', permanent=False)
+            return redirect('question-list', permanent=False)
         return super(SplashPage, self).dispatch(request, *args, **kwargs)
 
 
@@ -57,14 +56,10 @@ class WebAppView(LoginRequired, TemplateView):
     """
     Authenticated web application view that serves all context and content
     to kick off the Backbone front-end application.
+
+    TODO: This has been deprecated in favor of future front-end work.
     """
-
-    template_name = "app/index.html"
-
-    def get_context_data(self, **kwargs):
-        context = super(WebAppView, self).get_context_data(**kwargs)
-        context['question_list'] = Question.objects.order_by('-modified')
-        return context
+    pass
 
 
 ##########################################################################

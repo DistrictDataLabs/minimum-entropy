@@ -26,7 +26,7 @@ from rest_framework import viewsets
 from users.mixins import LoginRequired
 from users.permissions import IsAuthorOrReadOnly
 from tagging.serializers import CSVTagSerializer
-from django.views.generic import DetailView, TemplateView
+from django.views.generic import DetailView, ListView
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -36,6 +36,29 @@ from rest_framework.decorators import detail_route, list_route
 ##########################################################################
 ## HTTP Generated Views
 ##########################################################################
+
+class QuestionList(LoginRequired, ListView):
+    """
+    Authenticated web application view that serves all context and content
+    to kick off the Backbone front-end application.
+    """
+
+    model = Question
+    template_name = "fugato/list.html"
+    context_object_name = 'question_list'
+    paginate_by = 20
+
+    def get_queryset(self):
+        """
+        Performs filtering on the queryset based on the query arguments.
+        """
+        queryset = super(QuestionList, self).get_queryset()
+        return queryset.order_by('-modified')
+
+    def get_context_data(self, **kwargs):
+        context = super(QuestionList, self).get_context_data(**kwargs)
+        return context
+
 
 class QuestionDetail(LoginRequired, DetailView):
 
