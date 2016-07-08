@@ -58,9 +58,19 @@ class QuestionList(LoginRequired, ListView):
         self.search_by = self.request.GET.get('search', "").strip()
         self.sorted_by = self.request.GET.get('sort', 'recent').lower()
         self.tagged_by = self.request.GET.get('tag', None)
-
+        
+        # Filter the queryset by the search term
         if self.search_by:
             queryset = queryset.search(self.search_by)
+
+        # Filter the queryset by the tag object
+        if self.tagged_by:
+            # Convert the query string into a Tag object
+            try:
+                self.tagged_by = Tag.objects.tag(self.tagged_by)
+                queryset = self.tagged_by.questions.all()
+            except Tag.DoesNotExist:
+                queryset = queryset.none()
 
         # Select the order by key constraint
         if self.sorted_by == 'recent':
@@ -93,6 +103,9 @@ class QuestionList(LoginRequired, ListView):
         context['sort']   = self.sorted_by
         context['tag']    = self.tagged_by
         context['search'] = self.search_by
+
+        # Add rendering params for the view
+        context['navbar_active'] = "questions"
 
         # TODO: This might be very slow, improve this!
         context['num_all_questions'] = self.model.objects.count()
