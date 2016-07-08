@@ -43,6 +43,23 @@ class QuestionDetail(LoginRequired, DetailView):
     template_name = "fugato/question.html"
     context_object_name = "question"
 
+    def get_object(self):
+        """
+        Ensures the answer order is correct by always calling the set answer
+        order method when the object is retrieved from the database.
+
+        TODO: This is expensive! We should only redo the answer order when it
+        makes sense (e.g. someone is voting) -- the problem is that the model
+        that is being changed (votes for answers) in this case is very far
+        from the object that is tracking it (the question). Therefore this is
+        the place it makes sense to solve things, but in the future should be
+        optimized otherwise this will be a performance drag.
+        """
+        obj = super(QuestionDetail, self).get_object()
+        obj.set_answer_order_by_votes()
+        return obj
+
+
 
 ##########################################################################
 ## API HTTP/JSON Views
@@ -78,7 +95,10 @@ class QuestionViewSet(viewsets.ModelViewSet):
                 'vote': serializer.validated_data['vote'],
             }
 
+            # Vote for the question
             _, created = Vote.objects.punch_ballot(**kwargs)
+
+            # Construct the Response
             response = serializer.data
             response.update({'status': 'vote recorded', 'created': created,
                              'upvotes': question.votes.upvotes().count(),
@@ -119,7 +139,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
             # Next delete any tags that were removed from the question
             for tag in question.tags.all():
                 if tag.text not in serializer.validated_data['csv_tags']:
-                    question.tags.remove(tag) 
+                    question.tags.remove(tag)
 
             return Response(CSVTagSerializer.serialize_question(question))
         else:
