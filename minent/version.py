@@ -19,10 +19,10 @@ Helper module for managing versioning information
 
 __version_info__ = {
     'major': 1,
-    'minor': 0,
+    'minor': 1,
     'micro': 0,
     'releaselevel': 'beta',
-    'serial': 1,
+    'serial': 2,
 }
 
 
