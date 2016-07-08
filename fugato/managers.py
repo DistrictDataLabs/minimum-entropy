@@ -20,6 +20,35 @@ Custom managers for the fugato models
 from django.db import models
 from minent.utils import signature
 
+
+##########################################################################
+## Tag QuerySet
+##########################################################################
+
+class QuestionQuerySet(models.query.QuerySet):
+    """
+    Adds special methods to a query set of question objects.
+    """
+
+    def unanswered(self):
+        """
+        Returns any question that is unanswered
+        """
+        return self.count_answers().filter(num_answers=0)
+
+    def count_votes(self):
+        """
+        Returns questions annotated with the number of votes they have.
+        """
+        return self.annotate(num_votes=models.Count('votes'))
+
+    def count_answers(self):
+        """
+        Returns questions annotated with the number of answers they have.
+        """
+        return self.annotate(num_answers=models.Count('answers'))
+
+
 ##########################################################################
 ## Questions Manager
 ##########################################################################
@@ -48,4 +77,22 @@ class QuestionManager(models.Manager):
         """
         Returns any question that is unanswered
         """
-        return self.annotate(num_answers=models.Count('answers')).filter(num_answers=0)
+        return self.get_queryset().unanswered()
+
+    def count_votes(self):
+        """
+        Returns questions annotated with the number of votes they have.
+        """
+        return self.get_queryset().count_votes()
+
+    def count_answers(self):
+        """
+        Returns questions annotated with the number of answers they have.
+        """
+        return self.get_queryset().count_answers()
+
+    def get_queryset(self):
+        """
+        Return a QuestionQuerySet instead of the standard queryset.
+        """
+        return QuestionQuerySet(self.model, using=self._db)

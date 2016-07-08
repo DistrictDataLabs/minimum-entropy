@@ -10,14 +10,23 @@
         <!-- Left sidebar -->
         <div class="col-md-3" id="sidebar">
 
-          <h4>Filter by:</h4>
-          <hr class="profile-sep" />
+          <h4>View Questions By:</h4>
+          <hr class="sidebar-sep" />
           <ul class="nav nav-pills nav-stacked">
-            <li class="active">
-              <a href="#recent">Recent Questions</a>
+            <li {% if sort == 'recent' %}class="active"{% endif %}>
+              <a href="?sort=recent">Recent Questions</a>
             </li>
-            <li class="disabled">
-              <a href="#popular">Most Popular</a>
+            <li {% if sort == 'newest' %}class="active"{% endif %}>
+              <a href="?sort=newest">Newest Questions</a>
+            </li>
+            <li {% if sort == 'popular' %}class="active"{% endif %}>
+              <a href="?sort=popular">Most Popular</a>
+            </li>
+            <li {% if sort == 'frequent' %}class="active"{% endif %}>
+              <a href="?sort=frequent">Most Answered</a>
+            </li>
+            <li {% if sort == 'unanswered' %}class="active"{% endif %}>
+              <a href="?sort=unanswered">Unanswered Questions</a>
             </li>
           </ul>
         </div><!-- end left sidebar -->

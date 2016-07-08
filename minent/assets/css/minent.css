@@ -74,6 +74,11 @@ img.navbar-gravatar {
   height: 22px;
 }
 
+hr.sidebar-sep {
+    padding: 0;
+    margin: 1px 0 2px 0;
+}
+
 /* Editable items */
 
 .editable-item:hover a.edit-link:after{
@@ -214,29 +219,4 @@ span.twitter-typeahead {
 
 .tt-suggestion p {
   margin: 0;
-}
-
-/* D3 Graphs */
-
-.node {
-    stroke: #fff;
-    stroke-width: 1.5px;
-}
-
-.link {
-    stroke: #999;
-    stroke-opacity: .6;
-}
-
-/* Google Maps */
-
-#google_canvas {
-	height:200px;
-}
-#google_canvas h1 {
-	font-size:16px;
-}
-#google_canvas h2 {
-	font-size:14px;
-	font-weight:300;
 }
