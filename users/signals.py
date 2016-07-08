@@ -19,9 +19,10 @@ Signals management for the Users app
 
 import hashlib
 
+from minent.utils import htmlize
 from stream.signals import stream
 from django.dispatch import receiver
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, pre_save
 
 from users.models import Profile
 from django.contrib.auth.models import User
@@ -29,6 +30,12 @@ from django.contrib.auth.models import User
 ##########################################################################
 ## Signals
 ##########################################################################
+
+@receiver(pre_save, sender=Profile)
+def question_render_markdown(sender, instance, *args, **kwargs):
+    if instance.biography:
+        instance.biography_rendered = htmlize(instance.biography)
+
 
 @receiver(post_save, sender=User)
 def update_user_profile(sender, instance, created, **kwargs):
@@ -44,6 +51,7 @@ def update_user_profile(sender, instance, created, **kwargs):
     else:
         instance.profile.email_hash = digest
         instance.profile.save()
+
 
 @receiver(post_save, sender=User)
 def send_joined_activity_signal(sender, instance, created, **kwargs):

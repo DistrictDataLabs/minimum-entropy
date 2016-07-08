@@ -43,3 +43,9 @@ class QuestionManager(models.Manager):
             return query.first(), False
 
         return self.create(**kwargs), True
+
+    def unanswered(self):
+        """
+        Returns any question that is unanswered
+        """
+        return self.annotate(num_answers=models.Count('answers')).filter(num_answers=0)
