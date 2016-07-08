@@ -1,5 +1,6 @@
 {% extends 'page.html' %}
 {% load staticfiles %}
+{% load humanize %}
 {# This page displays the question feeds app #}
 
   {% block content %}
@@ -9,6 +10,11 @@
 
         <!-- Left sidebar -->
         <div class="col-md-3" id="sidebar">
+
+          <h3 style="margin-bottom: 18px;">
+            {{ num_all_questions|intcomma }}
+            <small class="text-muted">Questions</small>
+          </h3>
 
           <h4>View Questions By:</h4>
           <hr class="sidebar-sep" />

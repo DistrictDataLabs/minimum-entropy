@@ -89,6 +89,9 @@ class QuestionList(LoginRequired, ListView):
         context['sort'] = self.sorted_by
         context['tag']  = self.tagged_by
 
+        # TODO: This might be very slow, improve this!
+        context['num_all_questions'] = self.model.objects.count()
+
         return context
 
 
