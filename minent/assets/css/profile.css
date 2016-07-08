@@ -84,4 +84,5 @@ ul.activity-stream li {
 .qa-list-item {
     overflow-x: hidden;
     white-space: nowrap;
+    text-overflow: ellipsis;
 }

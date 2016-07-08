@@ -152,7 +152,7 @@
                   <!-- Questions List Group -->
                   <div class="list-group">
                     {% for question in user.questions.all|slice:":5" %}
-                    <a href="{{ question.get_absolute_url }}" title="{{ question }}" class="list-group-item">
+                    <a href="{{ question.get_absolute_url }}" title="{{ question }}" class="list-group-item qa-list-item">
                       {% with num_votes=question.votes.total.total %}
                       <span class="label label-primary question-label">{% if num_votes %}{{ num_votes }}{% else %}0{% endif %}</span>
                       {{ question }}
@@ -174,7 +174,7 @@
                   <!-- Answers List Group -->
                   <div class="list-group">
                     {% for answer in user.answers.all|slice:":5" %}
-                    <a href="{{ answer.question.get_absolute_url }}" title="{{ answer.question }}" class="list-group-item">
+                    <a href="{{ answer.question.get_absolute_url }}" title="{{ answer.question }}" class="list-group-item qa-list-item">
                       {% with num_votes=answer.votes.total.total %}
                       <span class="label label-primary question-label">{% if num_votes %}{{ num_votes }}{% else %}0{% endif %}</span>
                       {{ answer.question }}
