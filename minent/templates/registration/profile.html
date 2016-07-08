@@ -139,6 +139,55 @@
             </div>
             {% endif %}
 
+            <!-- split the pane for questions and answers -->
+            <div class="row">
+
+              <!-- Questions Pane -->
+              <div class="col-md-6">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Questions <span class="text-muted pull-right"><small>{{ user.questions.unanswered.count }} unanswered</small></span></h3>
+                  </div>
+
+                  <!-- Questions List Group -->
+                  <div class="list-group">
+                    {% for question in user.questions.all|slice:":5" %}
+                    <a href="{{ question.get_absolute_url }}" title="{{ question }}" class="list-group-item">
+                      {% with num_votes=question.votes.total.total %}
+                      <span class="label label-primary question-label">{% if num_votes %}{{ num_votes }}{% else %}0{% endif %}</span>
+                      {{ question }}
+                      {% endwith %}
+                    </a>
+                    {% endfor %}
+                  </div>
+
+                </div>
+              </div>
+
+              <!-- Answers Pane -->
+              <div class="col-md-6">
+                <div class="panel panel-default">
+                  <div class="panel-heading">
+                    <h3 class="panel-title">Answers <span class="text-muted pull-right"><small>0 accepted</small></span></h3>
+                  </div>
+
+                  <!-- Answers List Group -->
+                  <div class="list-group">
+                    {% for answer in user.answers.all|slice:":5" %}
+                    <a href="{{ answer.question.get_absolute_url }}" title="{{ answer.question }}" class="list-group-item">
+                      {% with num_votes=answer.votes.total.total %}
+                      <span class="label label-primary question-label">{% if num_votes %}{{ num_votes }}{% else %}0{% endif %}</span>
+                      {{ answer.question }}
+                      {% endwith %}
+                    </a>
+                    {% endfor %}
+                  </div>
+
+                </div>
+              </div>
+
+            </div>
+
           </div><!-- details panel ends -->
 
           <!-- Member Activity Pane -->

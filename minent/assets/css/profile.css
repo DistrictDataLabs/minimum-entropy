@@ -73,3 +73,15 @@ ul.activity-stream li {
     margin: 10px 0;
     color: #333;
 }
+
+.question-label {
+    display: inline-block;
+    min-width:34px;
+    padding: 5px 0;
+    margin-right: 8px;
+}
+
+.qa-list-item {
+    overflow-x: hidden;
+    white-space: nowrap;
+}
