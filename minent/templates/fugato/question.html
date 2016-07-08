@@ -14,7 +14,8 @@
         margin: 10px 0;
       }
 
-      .question-details-form {
+      .question-details-form,
+      .question-tagging-form {
         margin-bottom: 20px;
       }
 
@@ -34,7 +35,7 @@
         margin: 18px 0 18px 0;
       }
 
-      #questionTags {
+      .question-tagging {
         margin: 16px 0;
       }
 
@@ -96,9 +97,18 @@
             <div class="question-details">
               {% if question.details %}
               {{ question.details_rendered|safe }}
+              {% else %}
+
+              {% if question.author == request.user %}
+              <p class="text-muted">Please add a detailed description of your question, including any research you've already completed, code that is buggy, or specific details of what you'd like to see in a response.</p>
+              {% else %}
+              <p class="text-muted">Awaiting the author of this question to provide further details.</p>
+              {% endif %}
+
               {% endif %}
             </div>
 
+            {% if question.author == request.user %}
             <!-- question details form -->
             <div class="question-details-form">
               <form role="form" id="formQuestionDetails" class="hidden">
@@ -113,13 +123,44 @@
                 <div class="clearfix"></div>
               </form>
             </div>
+            {% endif %}
 
             <!-- question tags -->
-            <p id="questionTags">
-              {% for tag in question.tags.all %}
-              <span class="label label-primary">{% if tag.is_synonym %}{{ tag.head_word }}{% else %}{{ tag }}{% endif %}</span>
-              {% endfor %}
-            </p>
+            <div class="question-tagging">
+              <div class="pull-left" id="questionTags">
+                {% for tag in question.tags.all %}
+                <span class="label label-primary">{% if tag.is_synonym %}{{ tag.head_word }}{% else %}{{ tag }}{% endif %}</span>
+                {% endfor %}
+              </div>
+              <div class="pull-right">
+                {% if question.author == request.user %}
+                {% if question.tags.count > 0 %}
+                <p><a class="edit-tags" href="#">Edit Tags</a></p>
+                {% else %}
+                <p><a class="edit-tags" href="#">Add Tags</a></p>
+                {% endif %}
+                {% endif %}
+              </div>
+              <div class="clearfix"></div>
+            </div>
+
+            {% if question.author == request.user %}
+            <!-- question tags form -->
+            <div class="question-tagging-form">
+              <form role="form" id="formQuestionTags" class="hidden">
+                <div class="form-group">
+                  <input id="txtQuestionTags" class="form-control" name="tags" type="text" value="{{ question.tags.to_csv }}" />
+                  <span class="help-block pull-left">Separate Tags with a Comma</span>
+                </div>
+                <div class="pull-right">
+                  <button id="btnCancelEditTags" type="button" class="btn btn-default btn-sm">Cancel</button>
+                  <button id="btnSubmitEditTags" type="submit" class="btn btn-primary btn-sm">Update</button>
+                </div>
+                <div class="clearfix"></div>
+              </form>
+            </div>
+            {% endif %}
+
 
             <!-- answers meta data -->
             <div id="answerMeta">
@@ -272,6 +313,12 @@
           var btnEditDetails       = $(".edit-details");
           var btnCancelEditDetails = $("#btnCancelEditDetails");
           var btnSubmitEditDetails = $("#btnSubmitEditDetails");
+          var questionTags         = $("#questionTags");
+          var tagsForm             = $("form#formQuestionTags");
+          var txtQuestionTags      = $("#txtQuestionTags");
+          var btnEditTags          = $(".edit-tags");
+          var btnCancelEditTags    = $("#btnCancelEditTags");
+          var btnSubmitEditTags    = $("#btnSubmitEditTags");
 
           ////////////////////////////////////////////////////////////////
           /// Handle the Details editing
@@ -340,6 +387,103 @@
 
             return false;
           });
+
+          ////////////////////////////////////////////////////////////////
+          /// Handle the Tags editing
+          ////////////////////////////////////////////////////////////////
+
+          // Handle edit tags link press (start editing the tags)
+          btnEditTags.click(function(e) {
+            e.preventDefault();
+            questionTags.addClass("hidden").removeClass("show");
+            tagsForm.addClass("show").removeClass("hidden");
+            $(".edit-tags").addClass("hidden").removeClass("show");
+            return false;
+          });
+
+          // Handle the cancel edit button press (stop editing)
+          btnCancelEditTags.click(function(e) {
+            questionTags.addClass("show").removeClass("hidden");
+            tagsForm.addClass("hidden").removeClass("show");
+            $(".edit-tags").addClass("show").removeClass("hidden");
+
+            // Reload the text input with tags from the endpoint
+            $.getJSON(endpoint + "tags/", function(data) {
+              txtQuestionTags.val(data.csv_tags);
+
+              // Reset the error if it exists
+              if (txtQuestionTags.parent().hasClass('has-error')) {
+                  txtQuestionTags.parent().removeClass('has-error');
+                  txtQuestionTags.siblings('.help-block').text('Separate Tags with a Comma');
+              }
+            });
+
+            return false;
+          });
+
+          // Handle the submission of new tags (POST to tagging endpoint)
+          tagsForm.submit(function(e) {
+            e.preventDefault();
+
+            // Reset the error if it exists
+            if (txtQuestionTags.parent().hasClass('has-error')) {
+                txtQuestionTags.parent().removeClass('has-error');
+                txtQuestionTags.siblings('.help-block').text('Separate Tags with a Comma');
+            }
+
+            // Get the data from the text input and validate
+            var tags = txtQuestionTags.val();
+            if (!tags) {
+              var err = "Please enter at least one tag!"
+              txtQuestionTags.siblings('.help-block').text(err);
+              txtQuestionTags.parent().addClass('has-error');
+              return
+            }
+
+            // Disable the details form
+            tagsForm.find("input, button").attr('disabled', 'disabled');
+
+            // Put the data to the server
+            $.ajax({
+              url: endpoint + "tags/",
+              type: 'POST',
+              data: {
+                'csv_tags': tags,
+              },
+              success: function(data) {
+                // Update the input value
+                txtQuestionTags.val(data.csv_tags);
+
+                // Update the question tags on the page
+                questionTags.empty();
+                _.each(data.tags, function(tag) {
+                  var label = $('<span class="label label-primary"></span>');
+                  label.text(tag);
+                  questionTags.append(label);
+                  questionTags.append(" ");
+                });
+
+                $(".edit-tags").text("Edit Tags");
+                $(".edit-tags").addClass("show").removeClass("hidden");
+
+                // Swap and show the new area
+                tagsForm.find("input, button").removeAttr("disabled");
+                questionTags.addClass("show").removeClass("hidden");
+                tagsForm.addClass("hidden").removeClass("show");
+              },
+              error: function(jqXHR, status, error) {
+                console.log(status, error);
+                var err = jqXHR.responseJSON.csv_tags.join("; ");
+                txtQuestionTags.siblings('.help-block').text(err);
+
+                txtQuestionTags.parent().addClass('has-error');
+                tagsForm.find("input, button").removeAttr("disabled");
+              }
+            });
+
+            return false;
+          });
+
 
           ////////////////////////////////////////////////////////////////
           /// Write or Update answers

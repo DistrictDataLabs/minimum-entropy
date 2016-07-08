@@ -59,6 +59,12 @@ class Question(TimeStampedModel):
         """
         return reverse('api:question-detail', args=(self.pk,))
 
+    def has_tag(self, tag):
+        """
+        Returns True if the tag (a string) is in the list of tags.
+        """
+        return tag in [tag.text for tag in self.tags.all()]
+
     class Meta:
         db_table = "questions"
         get_latest_by = 'created'

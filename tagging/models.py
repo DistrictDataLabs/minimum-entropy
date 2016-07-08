@@ -37,7 +37,7 @@ class Tag(TimeStampedModel):
     head_word   = models.ForeignKey('self', related_name='synonyms', **nullable)
 
     ## Set custom tag manager
-    objects     = TagManager
+    objects     = TagManager()
 
     class Meta:
         db_table = "tags"
