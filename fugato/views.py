@@ -58,7 +58,7 @@ class QuestionList(LoginRequired, ListView):
         self.search_by = self.request.GET.get('search', "").strip()
         self.sorted_by = self.request.GET.get('sort', 'recent').lower()
         self.tagged_by = self.request.GET.get('tag', None)
-        
+
         # Filter the queryset by the search term
         if self.search_by:
             queryset = queryset.search(self.search_by)
@@ -67,7 +67,7 @@ class QuestionList(LoginRequired, ListView):
         if self.tagged_by:
             # Convert the query string into a Tag object
             try:
-                self.tagged_by = Tag.objects.tag(self.tagged_by)
+                self.tagged_by = Tag.objects.get(slug=self.tagged_by)
                 queryset = self.tagged_by.questions.all()
             except Tag.DoesNotExist:
                 queryset = queryset.none()

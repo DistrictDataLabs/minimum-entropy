@@ -39,6 +39,7 @@ from django.views.generic import TemplateView
 from users.views import *
 from minent.views import *
 from fugato.views import *
+from tagging.views import *
 
 ##########################################################################
 ## Endpoint Discovery
@@ -69,6 +70,7 @@ urlpatterns = [
     ## Application Pages
     url(r'^questions/$', QuestionList.as_view(), name='question-list'),
     url(r'^q/(?P<slug>[\w-]+)/$', QuestionDetail.as_view(), name='question'),
+    url(r'^tags/$', TagList.as_view(), name='tag-list'),
 
     ## Authentication
     url('', include('social.apps.django_app.urls', namespace='social')),
