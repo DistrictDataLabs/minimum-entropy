@@ -42,6 +42,7 @@ class Question(TimeStampedModel):
     related  = models.ManyToManyField( 'self', editable=True, blank=True )        # Links between related questions
     author   = models.ForeignKey( 'auth.User', related_name='questions' )         # The author of the question
     votes    = GenericRelation( Vote, related_query_name='questions' )            # Vote on whether or not the question is relevant
+    tags     = models.ManyToManyField('tagging.Tag', related_name='questions')    # Tag each question with terms for easy lookup
 
     ## Set custom manager on Question
     objects  = QuestionManager()
@@ -57,6 +58,12 @@ class Question(TimeStampedModel):
         Returns the API detail endpoint for the object
         """
         return reverse('api:question-detail', args=(self.pk,))
+
+    def has_tag(self, tag):
+        """
+        Returns True if the tag (a string) is in the list of tags.
+        """
+        return tag in [tag.text for tag in self.tags.all()]
 
     class Meta:
         db_table = "questions"

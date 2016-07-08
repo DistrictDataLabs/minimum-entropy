@@ -19,11 +19,13 @@ Views for the Fugato app
 
 from fugato.models import *
 from voting.models import Vote
+from tagging.models import Tag
 from fugato.serializers import *
 from voting.serializers import *
 from rest_framework import viewsets
 from users.mixins import LoginRequired
 from users.permissions import IsAuthorOrReadOnly
+from tagging.serializers import CSVTagSerializer
 from django.views.generic import DetailView, TemplateView
 
 from rest_framework import status
@@ -85,6 +87,45 @@ class QuestionViewSet(viewsets.ModelViewSet):
         else:
             return Response(serializer.errors,
                             status=status.HTTP_400_BAD_REQUEST)
+
+    @detail_route(methods=['get', 'post'], permission_classes=[IsAuthenticated])
+    def tags(self, request, pk=None):
+        """
+        A helper endpoint to post tags represented as CSV data.
+        """
+        question   = self.get_object()
+
+        if request.method == 'GET':
+            return Response(CSVTagSerializer.serialize_question(question))
+
+        serializer = CSVTagSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            # First add any tags to the question
+            for tag in serializer.validated_data['csv_tags']:
+                # Don't add tags again (minimize db queries )
+                if question.has_tag(tag): continue
+
+                # Otherwise, get or create the tag
+                tag, _ = Tag.objects.get_or_create(
+                    text = tag,
+                    defaults = {
+                        'creator': request.user,
+                    }
+                )
+
+                # Add the tag to the question object
+                question.tags.add(tag)
+
+            # Next delete any tags that were removed from the question
+            for tag in question.tags.all():
+                if tag.text not in serializer.validated_data['csv_tags']:
+                    question.tags.remove(tag) 
+
+            return Response(CSVTagSerializer.serialize_question(question))
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+
 
     @detail_route(methods=['get'], permission_classes=[IsAuthenticated])
     def answers(self, request, pk=None):

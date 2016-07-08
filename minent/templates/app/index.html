@@ -44,11 +44,13 @@
                 {% endif %}
               </div>
               <div class="question-actions">
-                <ul class="list-unstyled list-inline">
-                  <li><span class="label label-info">{{ question.answers.count }} answers</span></li>
-                  <li><span class="label label-info">{{ question.votes.count }} votes</span></li>
-                  <li><span class="label label-info">{{ question.topics.count }} topics</span></li>
-                </ul>
+                <p>
+                  <span class="label label-info">{{ question.answers.count }} answer{{ question.answers.count|pluralize }}</span>
+                  <span class="label label-info">{{ question.votes.count }} vote{{ question.votes.count|pluralize }}</span>
+                  {% for tag in question.tags.all %}
+                  <span class="label label-primary">{% if tag.is_synonym %}{{ tag.head_word }}{% else %}{{ tag }}{% endif %}</span>
+                  {% endfor %}
+                </p>
               </div>
             </div>
           {% endfor %}
