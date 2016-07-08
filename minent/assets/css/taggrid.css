@@ -1,0 +1,20 @@
+/* Styles for the tag grid page */
+
+.tag-block {
+    min-height: 128px;
+}
+
+.tag-question-count {
+    border: 1px solid #ccc;
+    width: 64px;
+    height: 64px;
+    padding-top: 6px;
+}
+
+.tag-description {
+    font-size: .9em;
+}
+
+.tag-meta-list {
+    font-size: .8em;
+}

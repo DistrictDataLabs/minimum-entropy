@@ -11,6 +11,11 @@
 
 """
 The fugato app is designed to collect questions.
+
+I'm not sure why this app is called Fugato, which is an Italian term for a
+section of classical music. The term originated with Kyudo, but was never
+exposed or properly explained. Other apps also carry classical music terms,
+hopefully with explainations about why they're named the way they are. 
 """
 
 ##########################################################################

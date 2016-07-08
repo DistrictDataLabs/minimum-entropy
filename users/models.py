@@ -33,9 +33,13 @@ class Profile(models.Model):
 
     user         = models.OneToOneField(User, editable=False)
     email_hash   = models.CharField(max_length=32, editable=False)
-    biography    = models.CharField(max_length=255, **nullable)
     organization = models.CharField(max_length=255, **nullable)
     location     = models.CharField(max_length=255, **nullable)
+    biography    = models.CharField(max_length=255, **nullable)
+    biography    = models.TextField(help_text="Edit in Markdown", **nullable)
+    biography_rendered = models.TextField(editable=False, **nullable)
+    twitter      = models.CharField(max_length=128, **nullable)
+    github       = models.CharField(max_length=128, **nullable)
 
     def get_gravatar_url(self, size=200, default="mm"):
         """
@@ -53,6 +57,10 @@ class Profile(models.Model):
     @property
     def gravatar_icon(self):
         return self.get_gravatar_url(size=24)
+
+    @property
+    def gravatar_badge(self):
+        return self.get_gravatar_url(size=64)
 
     @property
     def full_name(self):

@@ -21,6 +21,8 @@ from voting.models import Vote
 from stream.signals import stream
 from django.dispatch import receiver
 from django.db.models.signals import post_save
+from django.contrib.contenttypes.models import ContentType
+
 
 ##########################################################################
 ## Signals
@@ -52,3 +54,15 @@ def send_voted_activity_signal(sender, instance, created, **kwargs):
         'target':    instance.content_object,
     }
     stream.send(**voted)
+
+
+@receiver(post_save, sender=Vote)
+def update_answer_order_by_votes_signal(sender, instance, created, **kwargs):
+    """
+    Whenever a vote is saved, update the question's answer order with the new
+    voting information and therefore the new voting order.
+    """
+    ctype = instance.content_type
+    if ctype.app_label == 'fugato' and ctype.model == 'answer':
+        # We have a vote for an answer! Set the answer order based on votes!
+        instance.content_object.question.set_answer_order_by_votes()

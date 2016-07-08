@@ -32,19 +32,36 @@
           </div>
           <div class="form-group">
             <label for="organization">Organization</label>
-            <input type="text" class="form-control" value="{{ user.profile.organization }}" placeholder="Organization" id="organization" name="organization">
+            <input type="text" class="form-control" value="{% if user.profile.organization %}{{ user.profile.organization }}{% endif %}" placeholder="Organization" id="organization" name="organization">
             <span class="help-block"></span>
           </div>
           <div class="form-group">
             <label for="location">Location</label>
-            <input type="text" class="form-control" value="{{ user.profile.location }}" placeholder="Location" id="location" name="location">
+            <input type="text" class="form-control" value="{% if user.profile.location %}{{ user.profile.location }}{% endif %}" placeholder="Location" id="location" name="location">
+            <span class="help-block"></span>
+          </div>
+          <div class="form-group">
+            <label for="twitter">Twitter</label>
+            <div class="input-group">
+              <span class="input-group-addon" id="twitter-addon1">@</span>
+              <input type="text" class="form-control" value="{% if user.profile.twitter %}{{ user.profile.twitter }}{% endif %}" placeholder="Handle" id="twitter" name="twitter">
+            </div>
+            <span class="help-block"></span>
+          </div>
+          <div class="form-group">
+            <label for="github">GitHub</label>
+            <div class="input-group">
+              <span class="input-group-addon" id="github-addon1"><i class="fa fa-github"></i></span>
+              <input type="text" class="form-control" value="{% if user.profile.github %}{{ user.profile.github }}{% endif %}" placeholder="Handle" id="github" name="github">
+            </div>
             <span class="help-block"></span>
           </div>
           <div class="form-group">
             <label for="biography">Short Biography</label>
             <textarea rows="3", class="form-control" id="biography" name="biography">{% if user.profile.biography %}{{ user.profile.biography }}{% endif %}</textarea>
-            <span class="help-block"></span>
+            <span class="help-block">Edit in Markdown</span>
           </div>
+          {% csrf_token %}
         </form>
       </div>
       <div class="modal-footer">

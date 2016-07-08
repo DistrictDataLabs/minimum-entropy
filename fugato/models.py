@@ -28,6 +28,8 @@ from model_utils.models import TimeStampedModel
 from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.fields import GenericRelation
 
+from operator import itemgetter
+
 ##########################################################################
 ## Qustion and Answer Models
 ##########################################################################
@@ -42,6 +44,7 @@ class Question(TimeStampedModel):
     related  = models.ManyToManyField( 'self', editable=True, blank=True )        # Links between related questions
     author   = models.ForeignKey( 'auth.User', related_name='questions' )         # The author of the question
     votes    = GenericRelation( Vote, related_query_name='questions' )            # Vote on whether or not the question is relevant
+    tags     = models.ManyToManyField('tagging.Tag', related_name='questions')    # Tag each question with terms for easy lookup
 
     ## Set custom manager on Question
     objects  = QuestionManager()
@@ -57,6 +60,28 @@ class Question(TimeStampedModel):
         Returns the API detail endpoint for the object
         """
         return reverse('api:question-detail', args=(self.pk,))
+
+    def has_tag(self, tag):
+        """
+        Returns True if the tag (a string) is in the list of tags.
+        """
+        return tag in [tag.text for tag in self.tags.all()]
+
+    def set_answer_order_by_votes(self):
+        """
+        A helper function that calls the `set_answer_order` function and
+        passes in the order based on the sum of the votes.
+        """
+        # Construct the aggregation query
+        query = self.answers.values('id')
+        query = query.annotate(votes=models.Sum('votes__vote'))
+
+        order = [
+            a['id'] for a in sorted(query, key=itemgetter('votes'), reverse=True)
+        ]
+
+        self.set_answer_order(order)
+
 
     class Meta:
         db_table = "questions"
@@ -80,7 +105,7 @@ class Answer(TimeStampedModel):
 
     class Meta:
         db_table = "answers"
-        get_latest_by = 'created'
+        order_with_respect_to = 'question'
 
     def get_api_detail_url(self):
         """

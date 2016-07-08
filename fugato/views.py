@@ -19,12 +19,14 @@ Views for the Fugato app
 
 from fugato.models import *
 from voting.models import Vote
+from tagging.models import Tag
 from fugato.serializers import *
 from voting.serializers import *
 from rest_framework import viewsets
 from users.mixins import LoginRequired
 from users.permissions import IsAuthorOrReadOnly
-from django.views.generic import DetailView, TemplateView
+from tagging.serializers import CSVTagSerializer
+from django.views.generic import DetailView, ListView
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -34,6 +36,82 @@ from rest_framework.decorators import detail_route, list_route
 ##########################################################################
 ## HTTP Generated Views
 ##########################################################################
+
+class QuestionList(LoginRequired, ListView):
+    """
+    Authenticated web application view that serves all context and content
+    to kick off the Backbone front-end application.
+    """
+
+    model = Question
+    template_name = "fugato/list.html"
+    context_object_name = 'question_list'
+    paginate_by = 20
+
+    def get_queryset(self):
+        """
+        Performs filtering on the queryset based on the query arguments.
+        """
+        queryset = super(QuestionList, self).get_queryset()
+
+        # Get possible tag and sort options from the query string
+        self.search_by = self.request.GET.get('search', "").strip()
+        self.sorted_by = self.request.GET.get('sort', 'recent').lower()
+        self.tagged_by = self.request.GET.get('tag', None)
+
+        # Filter the queryset by the search term
+        if self.search_by:
+            queryset = queryset.search(self.search_by)
+
+        # Filter the queryset by the tag object
+        if self.tagged_by:
+            # Convert the query string into a Tag object
+            try:
+                self.tagged_by = Tag.objects.get(slug=self.tagged_by)
+                queryset = self.tagged_by.questions.all()
+            except Tag.DoesNotExist:
+                queryset = queryset.none()
+
+        # Select the order by key constraint
+        if self.sorted_by == 'recent':
+            queryset = queryset.order_by('-modified')
+
+        elif self.sorted_by == 'newest':
+            queryset = queryset.order_by('-created')
+
+        elif self.sorted_by == 'popular':
+            queryset = queryset.count_votes().order_by('-num_votes')
+
+        elif self.sorted_by == 'frequent':
+            queryset = queryset.count_answers().order_by('-num_answers')
+
+        elif self.sorted_by == 'unanswered':
+            queryset = queryset.unanswered()
+
+        else:
+            # This is the default, but possibly should warn or except
+            self.sorted_by = 'recent'
+            queryset = queryset.order_by('-modified')
+
+        # Construct the queryset request
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(QuestionList, self).get_context_data(**kwargs)
+
+        # Add query params for the view
+        context['sort']   = self.sorted_by
+        context['tag']    = self.tagged_by
+        context['search'] = self.search_by
+
+        # Add rendering params for the view
+        context['navbar_active'] = "questions"
+
+        # TODO: This might be very slow, improve this!
+        context['num_all_questions'] = self.model.objects.count()
+
+        return context
+
 
 class QuestionDetail(LoginRequired, DetailView):
 
@@ -76,7 +154,10 @@ class QuestionViewSet(viewsets.ModelViewSet):
                 'vote': serializer.validated_data['vote'],
             }
 
+            # Vote for the question
             _, created = Vote.objects.punch_ballot(**kwargs)
+
+            # Construct the Response
             response = serializer.data
             response.update({'status': 'vote recorded', 'created': created,
                              'upvotes': question.votes.upvotes().count(),
@@ -85,6 +166,45 @@ class QuestionViewSet(viewsets.ModelViewSet):
         else:
             return Response(serializer.errors,
                             status=status.HTTP_400_BAD_REQUEST)
+
+    @detail_route(methods=['get', 'post'], permission_classes=[IsAuthenticated])
+    def tags(self, request, pk=None):
+        """
+        A helper endpoint to post tags represented as CSV data.
+        """
+        question   = self.get_object()
+
+        if request.method == 'GET':
+            return Response(CSVTagSerializer.serialize_question(question))
+
+        serializer = CSVTagSerializer(data=request.data, context={'request': request})
+        if serializer.is_valid():
+            # First add any tags to the question
+            for tag in serializer.validated_data['csv_tags']:
+                # Don't add tags again (minimize db queries )
+                if question.has_tag(tag): continue
+
+                # Otherwise, get or create the tag
+                tag, _ = Tag.objects.get_or_create(
+                    text = tag,
+                    defaults = {
+                        'creator': request.user,
+                    }
+                )
+
+                # Add the tag to the question object
+                question.tags.add(tag)
+
+            # Next delete any tags that were removed from the question
+            for tag in question.tags.all():
+                if tag.text not in serializer.validated_data['csv_tags']:
+                    question.tags.remove(tag)
+
+            return Response(CSVTagSerializer.serialize_question(question))
+        else:
+            return Response(serializer.errors,
+                            status=status.HTTP_400_BAD_REQUEST)
+
 
     @detail_route(methods=['get'], permission_classes=[IsAuthenticated])
     def answers(self, request, pk=None):

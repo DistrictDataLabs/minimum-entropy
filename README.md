@@ -107,12 +107,19 @@ The release versions that are sent to the Python package index (PyPI) are also t
 
 The versioning uses a three part version system, "a.b.c" - "a" represents a major release that may not be backwards compatible. "b" is incremented on minor releases that may contain extra features, but are backwards compatible. "c" releases are bug fixes or other micro changes that developers should feel free to immediately update to.
 
+### Version 1.1 Beta 2
+
+* **tag**: [v1.1b2](https://github.com/DistrictDataLabs/minimum-entropy/releases/tag/v1.1b2)
+* **deployment**: Friday, July 8, 2016
+* **commit**: [see tag](#)
+
+The second beta release fixes a couple of bugs with the older profile system, and a lingering topic item from Kyudo. This release goes a bit further and creates a tagging system for questions (replacing topics) and allows for the ordering and search of questions in a more meaningful way. Hopefully this is the last official Beta version and Minimum Entropy can actually start to be used in a more meaningful way. 
 
 ### Version 1.0 Beta 1
 
 * **tag**: [v1.0b1](https://github.com/DistrictDataLabs/minimum-entropy/releases/tag/v1.0b1)
 * **deployment**: Tuesday, July 5, 2016
-* **commit**: [see tag](#)
+* **commit**: [256a4e6](https://github.com/DistrictDataLabs/minimum-entropy/commit/256a4e6eb45d49b0e1927a3bcd201848f474b5c0)
 
 This beta release for Version 1.0 simply moves the code over from Kyudo and modifies it to remove the research components and only present a question and answer system. Things are not perfect since the app was designed for a different research project. However, the core functionality - asking questions and answering them with Markdown, as well as up and down voting exists. This is a good start to beta to our faculty to see what they think!
 

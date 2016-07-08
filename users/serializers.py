@@ -35,7 +35,14 @@ class ProfileSerializer(serializers.ModelSerializer):
 
     class Meta:
         model  = Profile
-        fields = ('biography', 'gravatar', 'location', 'organization')
+        fields = (
+            'biography', 'biography_rendered', 'gravatar',
+            'location', 'organization',
+            'twitter', 'github',
+        )
+        extra_kwargs = {
+            'biography_rendered': {'read_only': True},
+        }
 
 
 class UserSerializer(serializers.HyperlinkedModelSerializer):
