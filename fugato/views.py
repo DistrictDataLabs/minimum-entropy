@@ -43,23 +43,6 @@ class QuestionDetail(LoginRequired, DetailView):
     template_name = "fugato/question.html"
     context_object_name = "question"
 
-    def get_object(self):
-        """
-        Ensures the answer order is correct by always calling the set answer
-        order method when the object is retrieved from the database.
-
-        TODO: This is expensive! We should only redo the answer order when it
-        makes sense (e.g. someone is voting) -- the problem is that the model
-        that is being changed (votes for answers) in this case is very far
-        from the object that is tracking it (the question). Therefore this is
-        the place it makes sense to solve things, but in the future should be
-        optimized otherwise this will be a performance drag.
-        """
-        obj = super(QuestionDetail, self).get_object()
-        obj.set_answer_order_by_votes()
-        return obj
-
-
 
 ##########################################################################
 ## API HTTP/JSON Views
