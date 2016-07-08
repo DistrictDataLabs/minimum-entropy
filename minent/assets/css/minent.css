@@ -79,6 +79,10 @@ hr.sidebar-sep {
     margin: 1px 0 2px 0;
 }
 
+.top-bar-heading {
+    margin-bottom: 18px;
+}
+
 /* Editable items */
 
 .editable-item:hover a.edit-link:after{

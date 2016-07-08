@@ -18,6 +18,8 @@ Custom query methods for Tag objects and their relationships.
 ##########################################################################
 
 from django.db import models
+from django.db.models.functions import Lower
+
 
 ##########################################################################
 ## Tag QuerySet
@@ -33,6 +35,12 @@ class TagQuerySet(models.query.QuerySet):
         Simple (naive) implementation of comma separated values of tags.
         """
         return ", ".join([tag.text for tag in self])
+
+    def lexical_ordering(self):
+        """
+        Returns a case-insensitive lexical ordering of the tags.
+        """
+        return self.order_by(Lower('text'))
 
 
 ##########################################################################
@@ -52,6 +60,12 @@ class TagManager(models.Manager):
         QuerySet methods must be mirrored on the Manager.
         """
         return self.get_queryset().to_csv()
+
+    def lexical_ordering(self):
+        """
+        Returns a case-insensitive lexical ordering of the tags.
+        """
+        return self.get_queryset().lexical_ordering()
 
     def get_queryset(self):
         """

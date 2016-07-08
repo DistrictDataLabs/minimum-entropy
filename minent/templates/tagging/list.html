@@ -1,0 +1,85 @@
+{% extends 'page.html' %}
+{% load staticfiles %}
+{% load humanize %}
+{# This page displays the tag grid #}
+
+{% block stylesheets %}
+  {{ block.super }}
+  <link type="text/css" rel="stylesheet" href="{% static 'css/taggrid.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <div class="container">
+
+      <!-- Page header -->
+      <div class="row">
+        <div class="col-xs-12">
+          <div class="page-header">
+            <h2>{{ num_all_tags|intcomma }} Tags</h2>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        {% for tag in tag_list %}
+        <!-- the size of the tag grid is determined responsively -->
+        <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
+          <div class="tag-block">
+            <div class="media">
+              <div class="media-left text-center">
+                <p class="tag-question-count">
+                  <span class="statistic">{{ tag.questions.count|intcomma }}</span>
+                  <span class="statlabel" style="margin-top:-4px; display:block;">questions</span>
+                </p>
+              </div>
+              <div class="media-body">
+                <a class="pull-left" href="{% url 'question-list' %}?tag={{ tag.slug }}">
+                  <h4 class="media-heading">{{ tag }}</h4>
+                </a>
+                {% if user.is_staff %}
+                <a class="pull-right" href="{% url 'admin:tagging_tag_change' tag.id %}">
+                  <small><i class="fa fa-edit"></i> edit</small>
+                </a>
+                {% endif %}
+                <div class="clearfix"></div>
+                {% if tag.description %}
+                <p class="tag-description">{{ tag.description }}</p>
+                {% endif %}
+              </div>
+            </div>
+            <ul class="list-inline list-unstyled tag-meta-list">
+              {% if tag.is_synonym %}
+              <li class="text-warning">Synonym: {{ tag.head_word }}</li>
+              {% endif %}
+              {% if user.is_staff %}
+              <li>Creator: {{ tag.creator.username }}</li>
+              {% endif %}
+            </ul>
+          </div>
+        </div>
+        {% empty %}
+        <!-- No tags warning! -->
+        <div class="col-xs-12">
+          <div class="alert alert-warning" role="alert">
+            <strong>Heads up!</strong>
+            No questions have been tagged, quick go tag some!
+          </div>
+        </div>
+        {% endfor %}
+      </div><!-- grid row ends -->
+    {# finished iterating over the tag grid #}
+
+      {# add pagination to the template #}
+      {% if is_paginated %}
+        {% load paginator %}
+        <div class="row">
+          <div class="col-xs-12">
+            {% paginator 3 %}
+          </div>
+        </div>
+      {% endif %}
+
+    </div><!-- container ends -->
+
+{% endblock %}

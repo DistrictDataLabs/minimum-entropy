@@ -1,5 +1,4 @@
 {% extends 'page.html' %}
-{% load staticfiles %}
 {% load humanize %}
 {# This page displays the question feeds app #}
 
@@ -11,7 +10,7 @@
         <!-- Left sidebar -->
         <div class="col-md-3" id="sidebar">
 
-          <h3 style="margin-bottom: 18px;">
+          <h3 class="top-bar-heading">
             {{ num_all_questions|intcomma }}
             <small class="text-muted">Questions</small>
           </h3>
@@ -48,6 +47,17 @@
 
         <!-- Right content -->
         <div class="col-md-9">
+
+          {% if tag and question_list %}
+          <h3 class="top-bar-heading">Questions tagged by <span class="text-primary">&ldquo;{{ tag }}&rdquo;</span></h3>
+          <hr class="sidebar-sep" />
+          {% endif %}
+
+          {% if search and question_list %}
+          <h3 class="top-bar-heading">Results for <span class="text-primary">&ldquo;{{ search }}&rdquo;</span></h3>
+          <hr class="sidebar-sep" />
+          {% endif %}
+
           {% for question in question_list %}
             <div class="question">
               <div class="question-title">
@@ -77,6 +87,16 @@
                 </p>
               </div>
             </div>
+          {% empty %}
+
+          {% if tag %}
+          <h3 class="top-bar-heading">No questions tagged with <span class="text-warning">&ldquo;{{ tag }}&rdquo;</span></h3>
+          {% elif search %}
+          <h3 class="top-bar-heading">No search results for <span class="text-warning">&ldquo;{{ search }}&rdquo;</span></h3>
+          {% else %}
+          <h3 class="top-bar-heading">No questions have been asked yet, be the first one!</h3>
+          {% endif %}
+          <hr class="sidebar-sep" />
           {% endfor %}
 
           {% if is_paginated %}
