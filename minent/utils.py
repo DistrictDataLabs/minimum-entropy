@@ -73,6 +73,25 @@ def htmlize(text):
     return text
 
 
+# Compile regular expression functions for query normalization
+find_terms = re.compile(r'"([^"]+)"|(\S+)').findall
+norm_space = re.compile(r'\s{2,}').sub
+
+def normalize_query(terms):
+    """
+    Splits the query string in individual keywords, getting rid of extra
+    spaces and grouping quoted words together.
+
+    Example:
+
+        >>> normalize_query(' some random  words "with   quotes " and spaces')
+        ['some', 'random', 'words', 'with quotes', 'and', 'spaces']
+    """
+    return [
+        norm_space(' ', (t[0] or t[1]).strip())
+        for t in find_terms(terms)
+    ]
+
 ##########################################################################
 ## Memoization
 ##########################################################################

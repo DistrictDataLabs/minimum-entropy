@@ -1,5 +1,6 @@
 {% extends 'page.html' %}
 {% load staticfiles %}
+{% load humanize %}
 {# This page displays the question feeds app #}
 
   {% block content %}
@@ -10,16 +11,39 @@
         <!-- Left sidebar -->
         <div class="col-md-3" id="sidebar">
 
-          <h4>Filter by:</h4>
-          <hr class="profile-sep" />
-          <ul class="nav nav-pills nav-stacked">
-            <li class="active">
-              <a href="#recent">Recent Questions</a>
-            </li>
-            <li class="disabled">
-              <a href="#popular">Most Popular</a>
-            </li>
-          </ul>
+          <h3 style="margin-bottom: 18px;">
+            {{ num_all_questions|intcomma }}
+            <small class="text-muted">Questions</small>
+          </h3>
+
+          <hr class="sidebar-sep" />
+
+          <form role="search" style="margin: 10px 0;" action="{% url 'question-list' %}" method='GET'>
+            <div class="form-group">
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="Search" name="search" id="search" value="{{ search }}">
+                <span class="input-group-btn">
+                  <button type="submit" class="btn btn-default">
+                    <i class="fa fa-search"></i>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </form>
+
+          <div class="panel panel-default">
+            <div class="panel-heading">
+              <h4 class="panel-title">View Questions By:</h4>
+            </div>
+            <div class="list-group">
+              <a class="list-group-item{% if sort == 'recent' %} active{% endif %}" href="?sort=recent">Recent Questions</a>
+              <a class="list-group-item{% if sort == 'newest' %} active{% endif %}" href="?sort=newest">Newest Questions</a>
+              <a class="list-group-item{% if sort == 'popular' %} active{% endif %}" href="?sort=popular">Most Popular</a>
+              <a class="list-group-item{% if sort == 'frequent' %} active{% endif %}" href="?sort=frequent">Most Answered</a>
+              <a class="list-group-item{% if sort == 'unanswered' %} active{% endif %}" href="?sort=unanswered">Unanswered Questions</a>
+            </div>
+          </div>
+
         </div><!-- end left sidebar -->
 
         <!-- Right content -->
@@ -54,6 +78,12 @@
               </div>
             </div>
           {% endfor %}
+
+          {% if is_paginated %}
+            {% load paginator %}
+            {% paginator 3 %}
+          {% endif %}
+
         </div><!-- end right content -->
 
       </div>

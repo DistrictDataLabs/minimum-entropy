@@ -20,7 +20,8 @@
         <!-- Left Nav -->
         {% if user.is_authenticated %}
         <ul class="nav navbar-nav">
-          <li><a href="{% url 'app-root' %}">Latest Questions</a></li>
+          <li><a href="{% url 'question-list' %}">Questions</a></li>
+          <li><a href="#">Tags</a></li>
         </ul>
         {% endif %}
 

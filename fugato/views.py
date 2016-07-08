@@ -26,7 +26,7 @@ from rest_framework import viewsets
 from users.mixins import LoginRequired
 from users.permissions import IsAuthorOrReadOnly
 from tagging.serializers import CSVTagSerializer
-from django.views.generic import DetailView, TemplateView
+from django.views.generic import DetailView, ListView
 
 from rest_framework import status
 from rest_framework.response import Response
@@ -36,6 +36,69 @@ from rest_framework.decorators import detail_route, list_route
 ##########################################################################
 ## HTTP Generated Views
 ##########################################################################
+
+class QuestionList(LoginRequired, ListView):
+    """
+    Authenticated web application view that serves all context and content
+    to kick off the Backbone front-end application.
+    """
+
+    model = Question
+    template_name = "fugato/list.html"
+    context_object_name = 'question_list'
+    paginate_by = 20
+
+    def get_queryset(self):
+        """
+        Performs filtering on the queryset based on the query arguments.
+        """
+        queryset = super(QuestionList, self).get_queryset()
+
+        # Get possible tag and sort options from the query string
+        self.search_by = self.request.GET.get('search', "").strip()
+        self.sorted_by = self.request.GET.get('sort', 'recent').lower()
+        self.tagged_by = self.request.GET.get('tag', None)
+
+        if self.search_by:
+            queryset = queryset.search(self.search_by)
+
+        # Select the order by key constraint
+        if self.sorted_by == 'recent':
+            queryset = queryset.order_by('-modified')
+
+        elif self.sorted_by == 'newest':
+            queryset = queryset.order_by('-created')
+
+        elif self.sorted_by == 'popular':
+            queryset = queryset.count_votes().order_by('-num_votes')
+
+        elif self.sorted_by == 'frequent':
+            queryset = queryset.count_answers().order_by('-num_answers')
+
+        elif self.sorted_by == 'unanswered':
+            queryset = queryset.unanswered()
+
+        else:
+            # This is the default, but possibly should warn or except
+            self.sorted_by = 'recent'
+            queryset = queryset.order_by('-modified')
+
+        # Construct the queryset request
+        return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super(QuestionList, self).get_context_data(**kwargs)
+
+        # Add query params for the view
+        context['sort']   = self.sorted_by
+        context['tag']    = self.tagged_by
+        context['search'] = self.search_by
+
+        # TODO: This might be very slow, improve this!
+        context['num_all_questions'] = self.model.objects.count()
+
+        return context
+
 
 class QuestionDetail(LoginRequired, DetailView):
 
