@@ -78,7 +78,10 @@ class QuestionViewSet(viewsets.ModelViewSet):
                 'vote': serializer.validated_data['vote'],
             }
 
+            # Vote for the question
             _, created = Vote.objects.punch_ballot(**kwargs)
+
+            # Construct the Response
             response = serializer.data
             response.update({'status': 'vote recorded', 'created': created,
                              'upvotes': question.votes.upvotes().count(),
@@ -119,7 +122,7 @@ class QuestionViewSet(viewsets.ModelViewSet):
             # Next delete any tags that were removed from the question
             for tag in question.tags.all():
                 if tag.text not in serializer.validated_data['csv_tags']:
-                    question.tags.remove(tag) 
+                    question.tags.remove(tag)
 
             return Response(CSVTagSerializer.serialize_question(question))
         else:

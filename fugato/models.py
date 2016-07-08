@@ -28,6 +28,8 @@ from model_utils.models import TimeStampedModel
 from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.fields import GenericRelation
 
+from operator import itemgetter
+
 ##########################################################################
 ## Qustion and Answer Models
 ##########################################################################
@@ -65,6 +67,22 @@ class Question(TimeStampedModel):
         """
         return tag in [tag.text for tag in self.tags.all()]
 
+    def set_answer_order_by_votes(self):
+        """
+        A helper function that calls the `set_answer_order` function and
+        passes in the order based on the sum of the votes.
+        """
+        # Construct the aggregation query
+        query = self.answers.values('id')
+        query = query.annotate(votes=models.Sum('votes__vote'))
+
+        order = [
+            a['id'] for a in sorted(query, key=itemgetter('votes'), reverse=True)
+        ]
+
+        self.set_answer_order(order)
+
+
     class Meta:
         db_table = "questions"
         get_latest_by = 'created'
@@ -87,7 +105,7 @@ class Answer(TimeStampedModel):
 
     class Meta:
         db_table = "answers"
-        get_latest_by = 'created'
+        order_with_respect_to = 'question'
 
     def get_api_detail_url(self):
         """

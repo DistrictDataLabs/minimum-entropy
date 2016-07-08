@@ -38,6 +38,12 @@ class VotingManager(models.Manager):
         """
         return self.filter(vote=self.model.BALLOT.downvote)
 
+    def total(self):
+        """
+        Returns the sum of the votes
+        """
+        return self.aggregate(total=models.Sum('vote'))
+
     def punch_ballot(self, content=None, user=None, vote=0):
         """
         Essentially `update_or_create` with ContentType lookup
