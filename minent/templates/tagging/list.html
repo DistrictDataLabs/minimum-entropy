@@ -23,6 +23,7 @@
 
       <div class="row">
         {% for tag in tag_list %}
+
         <!-- the size of the tag grid is determined responsively -->
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
           <div class="tag-block">
@@ -58,6 +59,21 @@
             </ul>
           </div>
         </div>
+
+        {# responsive clearfix checks #}
+        {% if forloop.counter|divisibleby:2 %}
+        <div class="clearfix visible-sm-block"></div>
+        {% endif %}
+
+        {% if forloop.counter|divisibleby:3 %}
+        <div class="clearfix visible-md-block"></div>
+        {% endif %}
+
+        {% if forloop.counter|divisibleby:4 %}
+        <div class="clearfix visible-lg-block"></div>
+        {% endif %}
+
+
         {% empty %}
         <!-- No tags warning! -->
         <div class="col-xs-12">
