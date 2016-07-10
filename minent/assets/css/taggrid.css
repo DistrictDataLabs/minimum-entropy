@@ -1,20 +1,35 @@
 /* Styles for the tag grid page */
 
 .tag-block {
-    min-height: 128px;
+    height: 192px;
+    position: relative;
+    border-bottom: 1px solid #ccc;
+    margin: 8px 0;
 }
 
-.tag-question-count {
-    border: 1px solid #ccc;
-    width: 64px;
-    height: 64px;
-    padding-top: 6px;
+.tag-heading-left {
+    width: 80%;
 }
+
+.tag-name {
+    font-size: 0.90em;
+}
+
+.tag-count {
+    padding-left: 6px;
+}
+
+.tag-body {
+    margin: 6px 0;
+}
+
 
 .tag-description {
     font-size: .85em;
 }
 
 .tag-meta-list {
-    font-size: .7em;
+    font-size: .8em;
+    position: absolute;
+    bottom: 0;
 }
