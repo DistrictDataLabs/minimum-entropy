@@ -27,7 +27,7 @@ from fugato.managers import QuestionManager
 from model_utils.models import TimeStampedModel
 from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.fields import GenericRelation
-
+from slugify import slugify
 from operator import itemgetter
 
 ##########################################################################
@@ -36,15 +36,15 @@ from operator import itemgetter
 
 class Question(TimeStampedModel):
 
-    text     = models.CharField( max_length=512, null=False )                     # The text of the question
-    slug     = AutoSlugField( populate_from='text', unique=True )                 # The slug of the question
+    text     = models.CharField( max_length=512, null=False )                      # The text of the question
+    slug     = AutoSlugField( populate_from='text', slugify=slugify, unique=True ) # The slug of the question
     signature = models.CharField( max_length=28, unique=True, editable=False )     # The normalized signature
-    details  = models.TextField( help_text="Edit in Markdown", **nullable )       # Additional details about the question
-    details_rendered = models.TextField( editable=False, **nullable )             # HTML rendered details text from MD
-    related  = models.ManyToManyField( 'self', editable=True, blank=True )        # Links between related questions
-    author   = models.ForeignKey( 'auth.User', related_name='questions' )         # The author of the question
-    votes    = GenericRelation( Vote, related_query_name='questions' )            # Vote on whether or not the question is relevant
-    tags     = models.ManyToManyField('tagging.Tag', related_name='questions')    # Tag each question with terms for easy lookup
+    details  = models.TextField( help_text="Edit in Markdown", **nullable )        # Additional details about the question
+    details_rendered = models.TextField( editable=False, **nullable )              # HTML rendered details text from MD
+    related  = models.ManyToManyField( 'self', editable=True, blank=True )         # Links between related questions
+    author   = models.ForeignKey( 'auth.User', related_name='questions' )          # The author of the question
+    votes    = GenericRelation( Vote, related_query_name='questions' )             # Vote on whether or not the question is relevant
+    tags     = models.ManyToManyField('tagging.Tag', related_name='questions')     # Tag each question with terms for easy lookup
 
     ## Set custom manager on Question
     objects  = QuestionManager()

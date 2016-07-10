@@ -22,6 +22,7 @@ from autoslug import AutoSlugField
 from model_utils.models import TimeStampedModel
 from minent.utils import nullable, notnullable
 from tagging.managers import TagManager
+from slugify import slugify
 
 ##########################################################################
 ## Question Tags
@@ -30,7 +31,7 @@ from tagging.managers import TagManager
 class Tag(TimeStampedModel):
 
     text        = models.CharField(max_length=100, unique=True)
-    slug        = AutoSlugField(populate_from='text', unique=True)
+    slug        = AutoSlugField(populate_from='text', slugify=slugify, unique=True)
     description = models.CharField(max_length=255, **nullable)
     creator     = models.ForeignKey('auth.User', related_name='tags')
     is_synonym  = models.BooleanField(default=False)

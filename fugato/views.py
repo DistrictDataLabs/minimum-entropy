@@ -185,8 +185,8 @@ class QuestionViewSet(viewsets.ModelViewSet):
                 if question.has_tag(tag): continue
 
                 # Otherwise, get or create the tag
-                tag, _ = Tag.objects.get_or_create(
-                    text = tag,
+                tag, _ = Tag.objects.tag(
+                    tag,
                     defaults = {
                         'creator': request.user,
                     }
@@ -196,8 +196,11 @@ class QuestionViewSet(viewsets.ModelViewSet):
                 question.tags.add(tag)
 
             # Next delete any tags that were removed from the question
+            slugs = [
+                slugify(t) for t in serializer.validated_data['csv_tags']
+            ]
             for tag in question.tags.all():
-                if tag.text not in serializer.validated_data['csv_tags']:
+                if tag.slug not in slugs:
                     question.tags.remove(tag)
 
             return Response(CSVTagSerializer.serialize_question(question))
