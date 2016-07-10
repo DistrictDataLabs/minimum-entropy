@@ -19,6 +19,7 @@ Custom query methods for Tag objects and their relationships.
 
 from django.db import models
 from django.db.models.functions import Lower
+from slugify import slugify
 
 
 ##########################################################################
@@ -49,11 +50,18 @@ class TagQuerySet(models.query.QuerySet):
 
 class TagManager(models.Manager):
 
-    def tag(self, tag):
+    def tag(self, tag, defaults=None):
         """
-        Looks up a tag by name (e.g. a helper method for get)
+        Looks up a tag by name (e.g. a helper method for get) or creates it
+        with the given defaults. This method enforces tag case insensitivity
+        and should be used over `get_or_create`.
         """
-        return self.get(text=tag)
+        try:
+            return self.get(slug=slugify(tag)), False
+        except self.model.DoesNotExist:
+            if defaults is None:
+                defaults = {}
+            return self.create(text=tag, **defaults), True
 
     def to_csv(self):
         """

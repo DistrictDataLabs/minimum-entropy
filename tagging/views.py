@@ -35,7 +35,7 @@ class TagList(LoginRequired, ListView):
     model = Tag
     template_name = "tagging/list.html"
     context_object_name = "tag_list"
-    paginate_by = 16
+    paginate_by = 24
 
     def get_queryset(self):
         """
