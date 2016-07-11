@@ -119,26 +119,22 @@ class AnswerModelTest(TestCase):
 
         # Ensure that the signal was sent once with required arguments
         handler.assert_called_once_with(verb='answer', sender=Answer,
-                    timestamp=answer.created, actor=self.user, theme=answer,
-                    target=self.question, signal=stream)
+                    timestamp=answer.created, actor=self.user, target=answer,
+                    signal=stream)
 
     def test_question_answered_activity(self):
         """
         Assert that when a question is answered, there is an activity stream item
         """
         answer  = Answer.objects.create(**fixtures['answer'])
-        target_content_type = ContentType.objects.get_for_model(answer.question)
-        target_object_id    =  answer.question.id
-        theme_content_type  = ContentType.objects.get_for_model(answer)
-        theme_object_id     = answer.id
+        target_content_type = ContentType.objects.get_for_model(answer)
+        target_object_id    = answer.id
 
         query   = {
             'verb': 'answer',
             'actor': self.user,
             'target_content_type': target_content_type,
             'target_object_id': target_object_id,
-            'theme_content_type': theme_content_type,
-            'theme_object_id': theme_object_id,
         }
 
         query = StreamItem.objects.filter(**query)
