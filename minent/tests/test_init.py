@@ -23,7 +23,7 @@ from unittest import TestCase
 ## Module variables
 ##########################################################################
 
-EXPECTED_VERSION = "1.1b2"
+EXPECTED_VERSION = "1.2b3"
 
 ##########################################################################
 ## Initialization Tests
