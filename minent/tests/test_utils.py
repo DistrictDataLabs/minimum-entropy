@@ -7,7 +7,7 @@
 # Copyright (C) 2015 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: test_utils.py [] benjamin@bengfort.com $
+# ID: test_utils.py [24fa113] benjamin@bengfort.com $
 
 """
 Tests for the utility module of minimum-entropy

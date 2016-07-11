@@ -49,11 +49,19 @@ The release versions that are sent to the Python package index (PyPI) are also t
 
 The versioning uses a three part version system, "a.b.c" - "a" represents a major release that may not be backwards compatible. "b" is incremented on minor releases that may contain extra features, but are backwards compatible. "c" releases are bug fixes or other micro changes that developers should feel free to immediately update to.
 
+### Version 1.2 Beta 3
+
+* **tag**: [v1.1b2](https://github.com/DistrictDataLabs/minimum-entropy/releases/tag/v1.2b3)
+* **deployment**: Monday, July 11, 2016
+* **commit**: [see tag](#)
+
+The third beta fixes the tag grid system which got all wonky in the first implementation when actual data was put in. The new style is similar to the Stack Overflow tag grid style. Moreover, now tags are case insensitive, which should help eliminate duplicates. The activity stream was also updated to use templates for a bit more robust control. The "answered" activity now takes the answer as a target rather than as a theme, and answers have detail links to the question that they're on. 
+
 ### Version 1.1 Beta 2
 
 * **tag**: [v1.1b2](https://github.com/DistrictDataLabs/minimum-entropy/releases/tag/v1.1b2)
 * **deployment**: Friday, July 8, 2016
-* **commit**: [see tag](#)
+* **commit**: [ebd553f](https://github.com/DistrictDataLabs/minimum-entropy/commit/ebd553fd8ec202de38fb3f27de2993770ac48960)
 
 The second beta release fixes a couple of bugs with the older profile system, and a lingering topic item from Kyudo. This release goes a bit further and creates a tagging system for questions (replacing topics) and allows for the ordering and search of questions in a more meaningful way. Hopefully this is the last official Beta version and Minimum Entropy can actually start to be used in a more meaningful way.
 

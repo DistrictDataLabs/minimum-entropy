@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: __init__.py [] benjamin@bengfort.com $
+# ID: __init__.py [70aac9d] benjamin@bengfort.com $
 
 """
 An app that implements an Activity Stream for minimum-entropy.

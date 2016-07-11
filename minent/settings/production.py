@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: production.py [] benjamin@bengfort.com $
+# ID: production.py [737e142] benjamin@bengfort.com $
 
 """
 The Django settings for minimum-entropy in production

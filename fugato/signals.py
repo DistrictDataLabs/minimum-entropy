@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: signals.py [] benjamin@bengfort.com $
+# ID: signals.py [8eae6c4] benjamin@bengfort.com $
 
 """
 Signals for the fugato app
@@ -80,8 +80,7 @@ def send_answered_activity_signal(sender, instance, created, **kwargs):
             'sender':    sender,
             'actor':     instance.author,
             'verb':      'answer',
-            'theme':     instance,
-            'target':    instance.question,
+            'target':    instance,
             'timestamp': instance.created,
         }
         stream.send(**activity)

@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: urls.py [] benjamin@bengfort.com $
+# ID: urls.py [916a654] benjamin@bengfort.com $
 
 """
 The main URL router for the Minimum Entropy application

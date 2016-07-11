@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: paginator.py [] benjamin@bengfort.com $
+# ID: paginator.py [6f1c3bb] benjamin@bengfort.com $
 
 """
 Provides a paginator tag context for digg-style pagination.

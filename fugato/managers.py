@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: managers.py [] benjamin@bengfort.com $
+# ID: managers.py [8eae6c4] benjamin@bengfort.com $
 
 """
 Custom managers for the fugato models

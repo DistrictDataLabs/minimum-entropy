@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: managers.py [] benjamin@bengfort.com $
+# ID: managers.py [70aac9d] benjamin@bengfort.com $
 
 """
 Custom manager for stream item objects

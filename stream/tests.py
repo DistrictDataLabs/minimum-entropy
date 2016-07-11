@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: tests.py [] benjamin@bengfort.com $
+# ID: tests.py [70aac9d] benjamin@bengfort.com $
 
 """
 Testing the Activity Stream library
@@ -126,7 +126,7 @@ class StreamItemModelTest(TestCase):
                 'timestamp': self.one_minute_ago(),
             })
 
-        expected = u'jdoe asked Why is the sky blue? 1 minute ago'
+        expected = u'jdoe asked &ldquo;Why is the sky blue?&rdquo; 1 minute ago'
 
         self.assertEqual(str(event), expected)
 
@@ -142,7 +142,7 @@ class StreamItemModelTest(TestCase):
                 'timestamp': self.one_minute_ago(),
             })
 
-        expected = u'jdoe up voted Why is the sky blue? 1 minute ago'
+        expected = u'jdoe up voted &ldquo;Why is the sky blue?&rdquo; 1 minute ago'
 
         self.assertEqual(str(event), expected)
 
@@ -160,6 +160,6 @@ class StreamItemModelTest(TestCase):
                 'timestamp': self.one_minute_ago(),
             })
 
-        expected = u'jdoe annotated sky on Why is the sky blue? 1 minute ago'
+        expected = u'jdoe annotated &ldquo;sky on Why is the sky blue?&rdquo; 1 minute ago'
 
         self.assertEqual(str(event), expected)

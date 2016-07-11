@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: votable.py [] benjamin@bengfort.com $
+# ID: votable.py [8eae6c4] benjamin@bengfort.com $
 
 """
 Tags for the Voting app

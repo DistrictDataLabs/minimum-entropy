@@ -23,41 +23,64 @@
 
       <div class="row">
         {% for tag in tag_list %}
+
         <!-- the size of the tag grid is determined responsively -->
         <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3">
           <div class="tag-block">
-            <div class="media">
-              <div class="media-left text-center">
-                <p class="tag-question-count">
-                  <span class="statistic">{{ tag.questions.count|intcomma }}</span>
-                  <span class="statlabel" style="margin-top:-4px; display:block;">questions</span>
-                </p>
-              </div>
-              <div class="media-body">
+            <div class="tag-heading">
+              <div class="tag-heading-left pull-left">
                 <a class="pull-left" href="{% url 'question-list' %}?tag={{ tag.slug }}">
-                  <h4 class="media-heading">{{ tag }}</h4>
+                  <span class="tag-name label label-primary">{{ tag }}</span>
                 </a>
-                {% if user.is_staff %}
-                <a class="pull-right" href="{% url 'admin:tagging_tag_change' tag.id %}">
+                <span class="tag-count text-muted">
+                  <small>x {{ tag.questions.count|intcomma }} questions</small>
+                </span>
+              </div>
+
+              <div class="tag-heading-right pull-right">
+              {% if user.is_staff %}
+                <a href="{% url 'admin:tagging_tag_change' tag.id %}">
                   <small><i class="fa fa-edit"></i> edit</small>
                 </a>
                 {% endif %}
-                <div class="clearfix"></div>
-                {% if tag.description %}
-                <p class="tag-description">{{ tag.description }}</p>
-                {% endif %}
               </div>
+              <div class="clearfix"></div>
             </div>
+
+            <div class="tag-body">
+              {% if tag.description %}
+              <p class="tag-description">{{ tag.description }}</p>
+              {% endif %}
+            </div>
+
             <ul class="list-inline list-unstyled tag-meta-list">
               {% if tag.is_synonym %}
               <li class="text-warning">Synonym: {{ tag.head_word }}</li>
               {% endif %}
               {% if user.is_staff %}
               <li>Creator: {{ tag.creator.username }}</li>
+              {% else %}
+              <li>Since {{ tag.created|date }}</li>
               {% endif %}
             </ul>
+
           </div>
         </div>
+
+        {# responsive clearfix checks #}
+        {% if forloop.counter|divisibleby:2 %}
+        <div class="clearfix visible-sm-block"></div>
+        {% endif %}
+
+        {% if forloop.counter|divisibleby:3 %}
+        <div class="clearfix visible-md-block"></div>
+        {% endif %}
+
+        {% if forloop.counter|divisibleby:4 %}
+        <div class="clearfix visible-lg-block"></div>
+        {% endif %}
+
+
         {% empty %}
         <!-- No tags warning! -->
         <div class="col-xs-12">

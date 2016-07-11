@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: models.py [] benjamin@bengfort.com $
+# ID: models.py [8eae6c4] benjamin@bengfort.com $
 
 """
 Models for the fugato app.
@@ -27,7 +27,7 @@ from fugato.managers import QuestionManager
 from model_utils.models import TimeStampedModel
 from django.core.urlresolvers import reverse
 from django.contrib.contenttypes.fields import GenericRelation
-
+from slugify import slugify
 from operator import itemgetter
 
 ##########################################################################
@@ -36,15 +36,15 @@ from operator import itemgetter
 
 class Question(TimeStampedModel):
 
-    text     = models.CharField( max_length=512, null=False )                     # The text of the question
-    slug     = AutoSlugField( populate_from='text', unique=True )                 # The slug of the question
+    text     = models.CharField( max_length=512, null=False )                      # The text of the question
+    slug     = AutoSlugField( populate_from='text', slugify=slugify, unique=True ) # The slug of the question
     signature = models.CharField( max_length=28, unique=True, editable=False )     # The normalized signature
-    details  = models.TextField( help_text="Edit in Markdown", **nullable )       # Additional details about the question
-    details_rendered = models.TextField( editable=False, **nullable )             # HTML rendered details text from MD
-    related  = models.ManyToManyField( 'self', editable=True, blank=True )        # Links between related questions
-    author   = models.ForeignKey( 'auth.User', related_name='questions' )         # The author of the question
-    votes    = GenericRelation( Vote, related_query_name='questions' )            # Vote on whether or not the question is relevant
-    tags     = models.ManyToManyField('tagging.Tag', related_name='questions')    # Tag each question with terms for easy lookup
+    details  = models.TextField( help_text="Edit in Markdown", **nullable )        # Additional details about the question
+    details_rendered = models.TextField( editable=False, **nullable )              # HTML rendered details text from MD
+    related  = models.ManyToManyField( 'self', editable=True, blank=True )         # Links between related questions
+    author   = models.ForeignKey( 'auth.User', related_name='questions' )          # The author of the question
+    votes    = GenericRelation( Vote, related_query_name='questions' )             # Vote on whether or not the question is relevant
+    tags     = models.ManyToManyField('tagging.Tag', related_name='questions')     # Tag each question with terms for easy lookup
 
     ## Set custom manager on Question
     objects  = QuestionManager()
@@ -60,6 +60,12 @@ class Question(TimeStampedModel):
         Returns the API detail endpoint for the object
         """
         return reverse('api:question-detail', args=(self.pk,))
+
+    def get_stream_repr(self):
+        """
+        Returns the object representation for the activity stream.
+        """
+        return '&ldquo;{}&rdquo;'.format(self)
 
     def has_tag(self, tag):
         """
@@ -107,11 +113,26 @@ class Answer(TimeStampedModel):
         db_table = "answers"
         order_with_respect_to = 'question'
 
+    def get_absolute_url(self):
+        """
+        Return the detail view of the Answer object, that is the url of the
+        question with the vertical reference to the answer attached.
+        """
+        url =  self.question.get_absolute_url()
+        url += "#answer-{}".format(self.id)
+        return url
+
     def get_api_detail_url(self):
         """
         Returns the API detail endpoint for the object
         """
         return reverse('api:answer-detail', args=(self.pk,))
+
+    def get_stream_repr(self):
+        """
+        Returns the object representation for the activity stream.
+        """
+        return self.question.get_stream_repr()
 
     def __str__(self):
         return self.text

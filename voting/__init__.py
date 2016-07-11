@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: __init__.py [] benjamin@bengfort.com $
+# ID: __init__.py [8eae6c4] benjamin@bengfort.com $
 
 """
 Handles the up and down voting for objects in the app

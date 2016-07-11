@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: signals.py [] benjamin@bengfort.com $
+# ID: signals.py [8eae6c4] benjamin@bengfort.com $
 
 """
 Signals handling for the Voting app

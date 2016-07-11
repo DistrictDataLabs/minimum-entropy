@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: __init__.py [] benjamin@bengfort.com $
+# ID: __init__.py [c5d00aa] benjamin@bengfort.com $
 
 """
 Provides a non-generic tagging methodology for minimum-entropy models. Other

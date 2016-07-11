@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: development.py [] benjamin@bengfort.com $
+# ID: development.py [737e142] benjamin@bengfort.com $
 
 """
 The Django settings for minimum-entropy in development.

@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: serializers.py [] benjamin@bengfort.com $
+# ID: serializers.py [8eae6c4] benjamin@bengfort.com $
 
 """
 JSON Serializers for the Fugato app
