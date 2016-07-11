@@ -19,10 +19,10 @@ Custom managers for the fugato models
 
 from django.db import models
 from minent.utils import signature, normalize_query
-
+from django.db.models.functions import Coalesce
 
 ##########################################################################
-## Tag QuerySet
+## Question QuerySet
 ##########################################################################
 
 class QuestionQuerySet(models.query.QuerySet):
@@ -40,7 +40,7 @@ class QuestionQuerySet(models.query.QuerySet):
         """
         Returns questions annotated with the number of votes they have.
         """
-        return self.annotate(num_votes=models.Count('votes'))
+        return self.annotate(num_votes=Coalesce(models.Sum('votes__vote'), 0))
 
     def count_answers(self):
         """
@@ -115,3 +115,39 @@ class QuestionManager(models.Manager):
         Return a QuestionQuerySet instead of the standard queryset.
         """
         return QuestionQuerySet(self.model, using=self._db)
+
+
+##########################################################################
+## Answer QuerySet
+##########################################################################
+
+class AnswerQuerySet(models.query.QuerySet):
+    """
+    Adds special methods to a query set of question objects.
+    """
+
+    def count_votes(self):
+        """
+        Returns questions annotated with the number of votes they have.
+        """
+        return self.annotate(num_votes=Coalesce(models.Sum('votes__vote'), 0))
+
+
+##########################################################################
+## Answer Manager
+##########################################################################
+
+class AnswerManager(models.Manager):
+
+    def count_votes(self):
+        """
+        Returns questions annotated with the number of votes they have.
+        """
+        return self.get_queryset().count_votes()
+
+
+    def get_queryset(self):
+        """
+        Return a QuestionQuerySet instead of the standard queryset.
+        """
+        return AnswerQuerySet(self.model, using=self._db)

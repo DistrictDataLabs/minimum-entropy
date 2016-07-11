@@ -129,7 +129,9 @@
             <div class="question-tagging">
               <div class="pull-left" id="questionTags">
                 {% for tag in question.tags.all %}
-                <span class="label label-primary">{% if tag.is_synonym %}{{ tag.head_word }}{% else %}{{ tag }}{% endif %}</span>
+                <a href="{% url 'question-list' %}?tag={{ tag.slug }}" title="Show questions tagged: {{ tag.text }}">
+                  <span class="label label-primary">{{ tag }}</span>
+                </a>
                 {% endfor %}
               </div>
               <div class="pull-right">
