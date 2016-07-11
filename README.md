@@ -111,7 +111,7 @@ The versioning uses a three part version system, "a.b.c" - "a" represents a majo
 
 * **tag**: [v1.2.1b4](https://github.com/DistrictDataLabs/minimum-entropy/releases/tag/v1.2.1b4)
 * **deployment**: Monday, July 11, 2016
-* **commit**: [see tag](#)
+* **commit**: [f27f0bf](https://github.com/DistrictDataLabs/minimum-entropy/commit/f27f0bf5d01e122fda76e3cb27bbe4b36f3e782a)
 
 A quick hotfix due to a question and answer ordering by vote bug. Also took the chance to add links to the tags in the question list and detail pages as well as to fix the synonym bug (temporarily). Links for the tags are still not rendered after JavaScript editing though.
 
