@@ -53,9 +53,9 @@ The versioning uses a three part version system, "a.b.c" - "a" represents a majo
 
 * **tag**: [v1.1b2](https://github.com/DistrictDataLabs/minimum-entropy/releases/tag/v1.2b3)
 * **deployment**: Monday, July 11, 2016
-* **commit**: [see tag](#)
+* **commit**: [6ff3530](https://github.com/DistrictDataLabs/minimum-entropy/commit/6ff3530eaf6af0584e65577ddeeedc19aced84a5)
 
-The third beta fixes the tag grid system which got all wonky in the first implementation when actual data was put in. The new style is similar to the Stack Overflow tag grid style. Moreover, now tags are case insensitive, which should help eliminate duplicates. The activity stream was also updated to use templates for a bit more robust control. The "answered" activity now takes the answer as a target rather than as a theme, and answers have detail links to the question that they're on. 
+The third beta fixes the tag grid system which got all wonky in the first implementation when actual data was put in. The new style is similar to the Stack Overflow tag grid style. Moreover, now tags are case insensitive, which should help eliminate duplicates. The activity stream was also updated to use templates for a bit more robust control. The "answered" activity now takes the answer as a target rather than as a theme, and answers have detail links to the question that they're on.
 
 ### Version 1.1 Beta 2
 
