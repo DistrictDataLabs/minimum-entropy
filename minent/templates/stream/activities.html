@@ -1,0 +1,25 @@
+{% load activity %}
+<!-- Activity Log -->
+<ul class="list-unstyled activity-stream">
+{% for activity in activity_stream %}
+  <li class="stream-item">
+    <span class="text-muted"><small>{{ activity.timesince }} ago</small></span><br />
+    {% autoescape off %}
+    {% if activity.target %}
+      {% if activity.theme %}
+        {% actor_detail activity %} {{ activity.get_verb_display }} {% theme_detail activity %} on {% target_detail activity %}
+      {% else %}
+        {% actor_detail activity %} {{ activity.get_verb_display }} {% target_detail activity %}
+      {% endif %}
+
+    {% elif activity.theme %}
+        {% actor_detail activity %} {{ activity.get_verb_display }} {% theme_detail activity %}
+    {% else %}
+      {% actor_detail activity %} {{ activity.get_verb_display }}
+    {% endif %}
+    {% endautoescape %}
+  </li>
+{% empty %}
+  <li>No activities recorded yet</li>
+{% endfor %}
+</ul><!-- end activity log -->

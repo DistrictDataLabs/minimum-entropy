@@ -61,6 +61,12 @@ class Question(TimeStampedModel):
         """
         return reverse('api:question-detail', args=(self.pk,))
 
+    def get_stream_repr(self):
+        """
+        Returns the object representation for the activity stream.
+        """
+        return '&ldquo;{}&rdquo;'.format(self)
+
     def has_tag(self, tag):
         """
         Returns True if the tag (a string) is in the list of tags.

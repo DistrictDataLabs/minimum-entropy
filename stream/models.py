@@ -109,7 +109,7 @@ class StreamItem(models.Model):
         Returns the URL of an object by using the `get_absolute_url` method
         otherwise returns None. (Shouldn't raise an error).
         """
-        if hasattr(obj, 'get_absolute_url') and callable(obj.get_absolute_url):
+        if hasattr(obj, 'get_absolute_url'):
             return obj.get_absolute_url()
         return None
 
@@ -122,40 +122,34 @@ class StreamItem(models.Model):
     def get_theme_url(self):
         return self.get_absolute_url(self.theme)
 
-    def get_object_html(self, obj, strfunc=str):
+    def get_object_repr(self, obj):
         """
         Returns an HTML representation of an object, basically an anchor
         to the object's absolute URL or just the plain string representation.
         """
-        href = self.get_object_url(obj)
-        if href is None:
-            return strfunc(obj)
-        return u'<a href="%s" title="%s">%s</a>' % (href, strfunc(obj), strfunc(obj))
 
-    def get_actor_html(self):
-        return self.get_object_html(self.actor, lambda actor: actor.username)
+        # If the object knowns how to represent itself ...
+        if hasattr(obj, 'get_stream_repr'):
+            return obj.get_stream_repr()
 
-    def get_target_html(self):
-        return self.get_object_html(self.target)
-
-    def get_theme_html(self):
-        return self.get_object_html(self.theme)
+        # Otherwise, simply return the string representation
+        return str(obj)
 
     def __str__(self):
         context = {
             'actor': self.actor.username,
             'verb': self.get_verb_display(),
-            'theme': self.theme,
-            'target': self.target,
+            'theme': self.get_object_repr(self.theme),
+            'target': self.get_object_repr(self.target),
             'timesince': self.timesince(),
         }
 
         if self.target:
             if self.theme:
-                return "%(actor)s %(verb)s %(theme)s on %(target)s %(timesince)s ago" % context
-            return "%(actor)s %(verb)s %(target)s %(timesince)s ago" % context
+                return "{actor} {verb} {theme} on {target} {timesince} ago".format(**context)
+            return "{actor} {verb} {target} {timesince} ago".format(**context)
 
         if self.theme:
-            return "%(actor)s %(verb)s %(theme)s %(timesince)s ago" % context
+            return "{actor} {verb} {theme} {timesince} ago".format(**context)
 
-        return "%(actor)s %(verb)s %(timesince)s ago" % context
+        return "{actor} {verb} {timesince} ago".format(**context)
