@@ -19,7 +19,7 @@ Custom managers for the fugato models
 
 from django.db import models
 from minent.utils import signature, normalize_query
-
+from django.db.models.functions import Coalesce
 
 ##########################################################################
 ## Tag QuerySet
@@ -40,7 +40,7 @@ class QuestionQuerySet(models.query.QuerySet):
         """
         Returns questions annotated with the number of votes they have.
         """
-        return self.annotate(num_votes=models.Count('votes'))
+        return self.annotate(num_votes=Coalesce(models.Sum('votes__vote'), 0))
 
     def count_answers(self):
         """
