@@ -43,16 +43,13 @@ class ProfileView(LoginRequired, TemplateView):
 
     def get_context_data(self, **kwargs):
         """
-        Computes the gravatar from the user email and adds data to the
-        context to render the template.
+        Custom context for the user in the request.
         """
         context = super(ProfileView, self).get_context_data(**kwargs)
         context['user'] = self.request.user
 
-        stream = self.request.user.activity_stream.all()[:10]
-        context['activity_stream'] = stream
+        return context 
 
-        return context
 
 ##########################################################################
 ## API HTTP/JSON Views

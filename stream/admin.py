@@ -2,7 +2,7 @@
 # Admin site configuration for activity stream
 #
 # Author:   Benjamin Bengfort <bbengfort@districtdatalabs.com>
-# Created:
+# Created:  Mon Jul 11 09:01:33 2016 -0400
 #
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
@@ -18,5 +18,11 @@ Admin site configuration for activity stream
 ##########################################################################
 
 from django.contrib import admin
+from stream.models import StreamItem
 
-# Register your models here.
+##########################################################################
+## Register Admin
+##########################################################################
+
+# Stream Item is too complicated for the CMS without a custom interface.
+# admin.site.register(StreamItem)

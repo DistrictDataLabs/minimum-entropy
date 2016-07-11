@@ -61,6 +61,12 @@ class Question(TimeStampedModel):
         """
         return reverse('api:question-detail', args=(self.pk,))
 
+    def get_stream_repr(self):
+        """
+        Returns the object representation for the activity stream.
+        """
+        return '&ldquo;{}&rdquo;'.format(self)
+
     def has_tag(self, tag):
         """
         Returns True if the tag (a string) is in the list of tags.
@@ -107,11 +113,26 @@ class Answer(TimeStampedModel):
         db_table = "answers"
         order_with_respect_to = 'question'
 
+    def get_absolute_url(self):
+        """
+        Return the detail view of the Answer object, that is the url of the
+        question with the vertical reference to the answer attached.
+        """
+        url =  self.question.get_absolute_url()
+        url += "#answer-{}".format(self.id)
+        return url
+
     def get_api_detail_url(self):
         """
         Returns the API detail endpoint for the object
         """
         return reverse('api:answer-detail', args=(self.pk,))
+
+    def get_stream_repr(self):
+        """
+        Returns the object representation for the activity stream.
+        """
+        return self.question.get_stream_repr()
 
     def __str__(self):
         return self.text

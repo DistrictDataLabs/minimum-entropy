@@ -176,7 +176,7 @@
           <div id="answerList">
             {% for answer in question.answers.all %}
 
-            <div class="answer">
+            <div id="answer-{{ answer.id }}" class="answer">
               <!-- answer info (author, date) -->
               <div class="answer-info">
                 <img title="{{ answer.author }}" src="{{ answer.author.profile.gravatar }}" />

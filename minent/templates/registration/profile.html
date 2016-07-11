@@ -1,5 +1,6 @@
 {% extends 'page.html' %}
 {% load staticfiles %}
+{% load activity %}
 
 {% block stylesheets %}
   {{ block.super }}
@@ -193,30 +194,8 @@
           <!-- Member Activity Pane -->
           <div id="activity" class="tab-pane">
             <div class="well">
-              <!-- Activity Log -->
-              <ul class="list-unstyled activity-stream">
-              {% for activity in activity_stream %}
-                <li class="stream-item">
-                  <span class="text-muted"><small>{{ activity.timesince }} ago</small></span><br />
-                  {% autoescape off %}
-                  {% if activity.target %}
-                    {% if activity.theme %}
-                      {{ activity.get_actor_html }} {{ activity.get_verb_display }} {{ activity.get_theme_html }} on {{ activity.get_target_html }}
-                    {% else %}
-                      {{ activity.get_actor_html }} {{ activity.get_verb_display }} {{ activity.get_target_html }}
-                    {% endif %}
-
-                  {% elif activity.theme %}
-                      {{ activity.get_actor_html }} {{ activity.get_verb_display }} {{ activity.get_theme_html }}
-                  {% else %}
-                    {{ activity.get_actor_html }} {{ activity.get_verb_display }}
-                  {% endif %}
-                  {% endautoescape %}
-                </li>
-              {% empty %}
-                <li>No activities recorded yet</li>
-              {% endfor %}
-              </ul><!-- end activity log -->
+              {# Use the activity stream inclusion tag to render the stream for the current user. #}
+              {% activity_stream request.user %}
             </div>
 
           </div><!-- activity panel ends -->
