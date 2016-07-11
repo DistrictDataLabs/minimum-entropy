@@ -80,8 +80,7 @@ def send_answered_activity_signal(sender, instance, created, **kwargs):
             'sender':    sender,
             'actor':     instance.author,
             'verb':      'answer',
-            'theme':     instance,
-            'target':    instance.question,
+            'target':    instance,
             'timestamp': instance.created,
         }
         stream.send(**activity)
