@@ -82,7 +82,9 @@
                   <span class="label label-info">{{ question.answers.count }} answer{{ question.answers.count|pluralize }}</span>
                   <span class="label label-info">{{ question.votes.count }} vote{{ question.votes.count|pluralize }}</span>
                   {% for tag in question.tags.all %}
-                  <span class="label label-primary">{% if tag.is_synonym %}{{ tag.head_word }}{% else %}{{ tag }}{% endif %}</span>
+                  <a href="{% url 'question-list' %}?tag={{ tag.slug }}" title="Show questions tagged: {{ tag.text }}">
+                    <span class="label label-primary">{% if tag.is_synonym %}{{ tag.head_word }}{% else %}{{ tag }}{% endif %}</span>
+                  </a>
                   {% endfor %}
                 </p>
               </div>
