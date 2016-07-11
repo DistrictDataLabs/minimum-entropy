@@ -7,7 +7,7 @@
 # Copyright (C) 2016 District Data Labs
 # For license information, see LICENSE.txt
 #
-# ID: activity.py [] benjamin@bengfort.com $
+# ID: activity.py [001baf8] benjamin@bengfort.com $
 
 """
 Representations of activity stream objects.

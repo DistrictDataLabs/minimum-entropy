@@ -49,13 +49,21 @@ The release versions that are sent to the Python package index (PyPI) are also t
 
 The versioning uses a three part version system, "a.b.c" - "a" represents a major release that may not be backwards compatible. "b" is incremented on minor releases that may contain extra features, but are backwards compatible. "c" releases are bug fixes or other micro changes that developers should feel free to immediately update to.
 
-### Version 1.2 Beta 3
+### Hotfix 1.2.1 Beta 4
 
-* **tag**: [v1.1b2](https://github.com/DistrictDataLabs/minimum-entropy/releases/tag/v1.2b3)
+* **tag**: [v1.2.1b4](https://github.com/DistrictDataLabs/minimum-entropy/releases/tag/v1.2.1b4)
 * **deployment**: Monday, July 11, 2016
 * **commit**: [see tag](#)
 
-The third beta fixes the tag grid system which got all wonky in the first implementation when actual data was put in. The new style is similar to the Stack Overflow tag grid style. Moreover, now tags are case insensitive, which should help eliminate duplicates. The activity stream was also updated to use templates for a bit more robust control. The "answered" activity now takes the answer as a target rather than as a theme, and answers have detail links to the question that they're on. 
+A quick hotfix due to a question and answer ordering by vote bug. Also took the chance to add links to the tags in the question list and detail pages as well as to fix the synonym bug (temporarily). Links for the tags are still not rendered after JavaScript editing though.
+
+### Version 1.2 Beta 3
+
+* **tag**: [v1.2b3](https://github.com/DistrictDataLabs/minimum-entropy/releases/tag/v1.2b3)
+* **deployment**: Monday, July 11, 2016
+* **commit**: [6ff3530](https://github.com/DistrictDataLabs/minimum-entropy/commit/6ff3530eaf6af0584e65577ddeeedc19aced84a5)
+
+The third beta fixes the tag grid system which got all wonky in the first implementation when actual data was put in. The new style is similar to the Stack Overflow tag grid style. Moreover, now tags are case insensitive, which should help eliminate duplicates. The activity stream was also updated to use templates for a bit more robust control. The "answered" activity now takes the answer as a target rather than as a theme, and answers have detail links to the question that they're on.
 
 ### Version 1.1 Beta 2
 

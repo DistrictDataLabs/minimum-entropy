@@ -19,16 +19,17 @@ Models for the fugato app.
 
 import time
 
+from slugify import slugify
 from django.db import models
 from voting.models import Vote
+from operator import itemgetter
 from minent.utils import nullable
 from autoslug import AutoSlugField
-from fugato.managers import QuestionManager
-from model_utils.models import TimeStampedModel
 from django.core.urlresolvers import reverse
+from model_utils.models import TimeStampedModel
+from fugato.managers import QuestionManager, AnswerManager
 from django.contrib.contenttypes.fields import GenericRelation
-from slugify import slugify
-from operator import itemgetter
+
 
 ##########################################################################
 ## Qustion and Answer Models
@@ -48,6 +49,10 @@ class Question(TimeStampedModel):
 
     ## Set custom manager on Question
     objects  = QuestionManager()
+
+    class Meta:
+        db_table = "questions"
+        get_latest_by = 'created'
 
     def get_absolute_url(self):
         """
@@ -79,19 +84,13 @@ class Question(TimeStampedModel):
         passes in the order based on the sum of the votes.
         """
         # Construct the aggregation query
-        query = self.answers.values('id')
-        query = query.annotate(votes=models.Sum('votes__vote'))
+        query = self.answers.count_votes().values('id', 'num_votes')
 
         order = [
-            a['id'] for a in sorted(query, key=itemgetter('votes'), reverse=True)
+            a['id'] for a in sorted(query, key=itemgetter('num_votes'), reverse=True)
         ]
 
         self.set_answer_order(order)
-
-
-    class Meta:
-        db_table = "questions"
-        get_latest_by = 'created'
 
     def __str__(self):
         return self.text
@@ -108,6 +107,9 @@ class Answer(TimeStampedModel):
     author   = models.ForeignKey( 'auth.User', related_name="answers" )          # The author of the answer
     question = models.ForeignKey( 'fugato.Question', related_name="answers" )    # The question this answer answers
     votes    = GenericRelation( Vote, related_query_name='answers' )             # Votes for the goodness of the answer
+
+    ## Set custom manager on Answer
+    objects  = AnswerManager()
 
     class Meta:
         db_table = "answers"
